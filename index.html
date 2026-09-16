@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - CourseBook</title>
-
+    <link rel="icon" type="image/x-icon" href="Assets/CourseBookLogo.png" />
     <link rel="stylesheet" href="Theme/style.css" />
 
     <style>
@@ -24,7 +24,7 @@
         max-width: 400px;
         overflow: hidden;
       }
-      
+
       .brand-header {
         background: white;
         padding: 20px 10px;
@@ -47,7 +47,7 @@
         gap: 15px;
       }
       .brand-logo {
-        width: 75px; 
+        width: 75px;
         height: auto;
       }
       .brand-title {
@@ -89,7 +89,7 @@
       .input-group input::placeholder {
         color: #888;
       }
-      
+
       .action-row {
         display: flex;
         justify-content: space-between;
@@ -126,12 +126,12 @@
         cursor: pointer;
         font-size: 15px;
         font-weight: bold;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       }
       .auth-btn:hover {
         background-color: #f1f1f1;
       }
-      
+
       .toggle-text {
         margin-top: 25px;
         font-size: 13px;
@@ -150,11 +150,10 @@
   </head>
   <body>
     <div class="auth-container">
-        
       <div class="brand-header">
         <div class="slogan">A NEW ERA OF ACADEMIC EXCELLENCE</div>
         <div class="logo-title-row">
-          <img src="Assets/CBLogo.png" alt="Logo" class="brand-logo" />
+          <img src="Assets/CourseBookLogo.png" alt="Logo" class="brand-logo" />
           <div class="brand-title">
             <span class="text-course">Course</span>
             <span class="text-book">Book</span>
@@ -163,27 +162,37 @@
       </div>
 
       <div class="auth-body">
-        
         <!-- LOGIN FORM -->
         <div id="login-section">
           <form id="login-form">
             <div class="input-group">
-              <input type="email" id="login-email" placeholder="Enter your ID / Email" required />
+              <input
+                type="email"
+                id="login-email"
+                placeholder="Enter your ID / Email"
+                required
+              />
             </div>
             <div class="input-group">
-              <input type="password" id="login-password" placeholder="Enter your password" required />
+              <input
+                type="password"
+                id="login-password"
+                placeholder="Enter your password"
+                required
+              />
             </div>
-            
+
             <div class="action-row">
               <div class="forgot-password" id="forgot-password-btn">
                 <span class="lock-icon">🔒</span>
-                FORGOT<br>PASSWORD
+                FORGOT<br />PASSWORD
               </div>
               <button type="submit" class="auth-btn">Login</button>
             </div>
           </form>
           <p class="toggle-text">
-            Don't have an account? <span onclick="toggleForm()">Sign Up here</span>
+            Don't have an account?
+            <span onclick="toggleForm()">Sign Up here</span>
           </p>
         </div>
 
@@ -191,7 +200,12 @@
         <div id="signup-section" class="hidden">
           <form id="signup-form">
             <div class="input-group">
-              <input type="text" id="signup-name" placeholder="Enter your full name" required />
+              <input
+                type="text"
+                id="signup-name"
+                placeholder="Enter your full name"
+                required
+              />
             </div>
             <div class="input-group">
               <select id="signup-role" required>
@@ -201,21 +215,37 @@
               </select>
             </div>
             <div class="input-group">
-              <input type="email" id="signup-email" placeholder="Enter your email" required />
+              <input
+                type="email"
+                id="signup-email"
+                placeholder="Enter your email"
+                required
+              />
             </div>
             <div class="input-group">
-              <input type="password" id="signup-password" placeholder="Create password (min 6 chars)" required />
+              <input
+                type="password"
+                id="signup-password"
+                placeholder="Create password (min 6 chars)"
+                required
+              />
             </div>
-            
-            <div class="action-row" style="justify-content: flex-end;">
-              <button type="submit" class="auth-btn" style="background-color: #0056b3; color: white;">Sign Up</button>
+
+            <div class="action-row" style="justify-content: flex-end">
+              <button
+                type="submit"
+                class="auth-btn"
+                style="background-color: #0056b3; color: white"
+              >
+                Sign Up
+              </button>
             </div>
           </form>
           <p class="toggle-text">
-            Already have an account? <span onclick="toggleForm()">Login here</span>
+            Already have an account?
+            <span onclick="toggleForm()">Login here</span>
           </p>
         </div>
-
       </div>
     </div>
 
@@ -236,9 +266,20 @@
     <!-- FIREBASE SCRIPT -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        sendEmailVerification,
+        onAuthStateChanged,
+        sendPasswordResetEmail,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       // Database import
-      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyC1VrcMa2Zo3wlhpEhDa14IrbXlEtjobjQ",
@@ -256,49 +297,65 @@
 
       onAuthStateChanged(auth, (user) => {
         if (user && user.emailVerified) {
-            window.location.replace("dashboard.html");
+          window.location.replace("dashboard.html");
         }
       });
 
       // Forgot Password Logic
-      document.getElementById("forgot-password-btn").addEventListener("click", () => {
-        const email = document.getElementById("login-email").value;
-        if (!email) {
-          alert("Prothome 'Enter your ID / Email' box-e apnar email type korun, tarpor 'Forgot Password'-e click korun.");
-          return;
-        }
-        sendPasswordResetEmail(auth, email)
-          .then(() => alert("Password reset link apnar email-e pathano hoyeche! Inbox check korun."))
-          .catch((error) => alert("Error: " + error.message));
-      });
+      document
+        .getElementById("forgot-password-btn")
+        .addEventListener("click", () => {
+          const email = document.getElementById("login-email").value;
+          if (!email) {
+            alert(
+              "Prothome 'Enter your ID / Email' box-e apnar email type korun, tarpor 'Forgot Password'-e click korun.",
+            );
+            return;
+          }
+          sendPasswordResetEmail(auth, email)
+            .then(() =>
+              alert(
+                "Password reset link apnar email-e pathano hoyeche! Inbox check korun.",
+              ),
+            )
+            .catch((error) => alert("Error: " + error.message));
+        });
 
       // Signup Logic with Firestore Database Save
-      document.getElementById("signup-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = document.getElementById("signup-email").value;
-        const password = document.getElementById("signup-password").value;
-        const name = document.getElementById("signup-name").value;
-        const role = document.getElementById("signup-role").value;
-        
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            
+      document
+        .getElementById("signup-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("signup-email").value;
+          const password = document.getElementById("signup-password").value;
+          const name = document.getElementById("signup-name").value;
+          const role = document.getElementById("signup-role").value;
+
+          try {
+            const userCredential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
+
             // User er details database e save kora
             await setDoc(doc(db, "users", userCredential.user.uid), {
-                name: name,
-                email: email,
-                role: role,
-                createdAt: new Date()
+              name: name,
+              email: email,
+              role: role,
+              createdAt: new Date(),
             });
 
             await sendEmailVerification(userCredential.user);
-            alert("Account Created Successfully! A verification email has been sent.");
+            alert(
+              "Account Created Successfully! A verification email has been sent.",
+            );
             toggleForm();
             document.getElementById("signup-form").reset();
-        } catch(error) {
+          } catch (error) {
             alert("Error: " + error.message);
-        }
-      });
+          }
+        });
 
       // Login Logic
       document.getElementById("login-form").addEventListener("submit", (e) => {
@@ -309,8 +366,8 @@
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             if (!userCredential.user.emailVerified) {
-                alert("Please verify your email address first.");
-                return;
+              alert("Please verify your email address first.");
+              return;
             }
             window.location.replace("dashboard.html");
           })
