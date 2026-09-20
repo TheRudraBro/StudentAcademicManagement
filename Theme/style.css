@@ -1484,9 +1484,9 @@ select.select {
   pointer-events: none;
 }
 .loader-mark {
-  width: 44px;
-  height: 44px;
-  border: 2px solid var(--brass);
+  width: 144px;
+  height: 144px;
+  /* border: 2px solid var(--brass); */
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
