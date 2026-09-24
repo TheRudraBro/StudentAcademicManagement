@@ -1,14 +1,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC1VrcMa2Zo3wlhpEhDa14IrbXlEtjobjQ",
-    authDomain: "studentmanagement-84401.firebaseapp.com",
-    projectId: "studentmanagement-84401",
-    storageBucket: "studentmanagement-84401.firebasestorage.app",
-    messagingSenderId: "1023520287147",
-    appId: "1:1023520287147:web:a20a35d9f98cac6afa4aee"
+  apiKey: "AIzaSyC1VrcMa2Zo3wlhpEhDa14IrbXlEtjobjQ",
+  authDomain: "studentmanagement-84401.firebaseapp.com",
+  projectId: "studentmanagement-84401",
+  storageBucket: "studentmanagement-84401.firebasestorage.app",
+  messagingSenderId: "1023520287147",
+  appId: "1:1023520287147:web:a20a35d9f98cac6afa4aee",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -26,60 +36,104 @@ const ICON_PATHS = {
   menu: '<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>',
   plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
   home: '<path d="M4 11L12 4l8 7"/><path d="M6 10v10h5v-6h2v6h5V10"/>',
-  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
-  clipboard: '<rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="8" y1="19" x2="13" y2="19"/>',
-  examfile: '<path d="M6 2h9l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><polyline points="15 2 15 7 20 7"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
-  checkcircle: '<circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/>',
-  barchart: '<line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="14"/>',
+  calendar:
+    '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
+  clipboard:
+    '<rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="8" y1="19" x2="13" y2="19"/>',
+  examfile:
+    '<path d="M6 2h9l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><polyline points="15 2 15 7 20 7"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
+  checkcircle:
+    '<circle cx="12" cy="12" r="9"/><polyline points="8 12 11 15 16 9"/>',
+  barchart:
+    '<line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="14"/>',
   book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>',
-  sliders: '<line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="18" r="2"/>',
+  sliders:
+    '<line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="18" r="2"/>',
   sun: '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.5" y2="6.5"/><line x1="17.5" y1="17.5" x2="19" y2="19"/><line x1="19" y1="5" x2="17.5" y2="6.5"/><line x1="6.5" y1="17.5" x2="5" y2="19"/>',
   moon: '<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
   edit: '<path d="M17 3a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
-  trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  trash:
+    '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
   chevronleft: '<polyline points="15 18 9 12 15 6"/>',
   chevronright: '<polyline points="9 18 15 12 9 6"/>',
-  search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>',
-  clock: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>',
-  mappin: '<path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  search:
+    '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>',
+  clock:
+    '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>',
+  mappin:
+    '<path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>',
-  alerttriangle: '<path d="M12 3l9.5 17H2.5z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/>',
-  xcircle: '<circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>',
-  externallink: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
-  download: '<path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 19h14"/>',
-  upload: '<path d="M12 21V9"/><polyline points="7 13 12 8 17 13"/><path d="M5 19h14"/>',
+  alerttriangle:
+    '<path d="M12 3l9.5 17H2.5z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/>',
+  xcircle:
+    '<circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>',
+  externallink:
+    '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+  download:
+    '<path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 19h14"/>',
+  upload:
+    '<path d="M12 21V9"/><polyline points="7 13 12 8 17 13"/><path d="M5 19h14"/>',
   star: '<polygon points="12 2 15 8.5 22 9.5 17 14.5 18.5 21.5 12 18 5.5 21.5 7 14.5 2 9.5 9 8.5"/>',
   filter: '<polygon points="4 4 20 4 14 12 14 19 10 21 10 12"/>',
   info: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"/>',
-  video: '<rect x="2" y="5" width="15" height="14" rx="2"/><polygon points="17 9 22 6 22 18 17 15"/>',
-  monitor: '<rect x="3" y="4" width="18" height="14" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/>',
+  video:
+    '<rect x="2" y="5" width="15" height="14" rx="2"/><polygon points="17 9 22 6 22 18 17 15"/>',
+  monitor:
+    '<rect x="3" y="4" width="18" height="14" rx="1"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/>',
   link: '<path d="M9 15l6-6"/><path d="M13 5l1.5-1.5a3.5 3.5 0 0 1 5 5L18 10"/><path d="M11 19l-1.5 1.5a3.5 3.5 0 0 1-5-5L6 14"/>',
-  award: '<circle cx="12" cy="8" r="6"/><polyline points="8.5 13.5 7 22 12 19 17 22 15.5 13.5"/>',
-  folder: '<path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h5l2 2.5h8a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18z"/>',
+  award:
+    '<circle cx="12" cy="8" r="6"/><polyline points="8.5 13.5 7 22 12 19 17 22 15.5 13.5"/>',
+  folder:
+    '<path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h5l2 2.5h8a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18z"/>',
   check: '<polyline points="4 12 9 17 20 6"/>',
-  inbox: '<path d="M4 12h4l2 3h4l2-3h4"/><path d="M4 12 6 4h12l2 8"/><path d="M4 12v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/>',
+  inbox:
+    '<path d="M4 12h4l2 3h4l2-3h4"/><path d="M4 12 6 4h12l2 8"/><path d="M4 12v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/>',
 };
 
 function icon(name, cls) {
-  const inner = ICON_PATHS[name] || '';
-  return '<svg class="icon' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+  const inner = ICON_PATHS[name] || "";
+  return (
+    '<svg class="icon' +
+    (cls ? " " + cls : "") +
+    '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    inner +
+    "</svg>"
+  );
 }
 
 function esc(str) {
-  if (str === null || str === undefined) return '';
-  return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  if (str === null || str === undefined) return "";
+  return String(str).replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
 }
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 9);
 }
-function pad2(n) { return String(n).padStart(2, '0'); }
-function clamp(n, min, max) { return Math.min(Math.max(n, min), max); }
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+function clamp(n, min, max) {
+  return Math.min(Math.max(n, min), max);
+}
 
-const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const WEEKDAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+const WEEKDAYS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function parseISODate(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number);
+  const [y, m, d] = dateStr.split("-").map(Number);
   return new Date(y, (m || 1) - 1, d || 1);
 }
 function todayISO() {
@@ -91,53 +145,75 @@ function nowTimeStr() {
   return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
 function formatDateLong(dateStr) {
-  return parseISODate(dateStr).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  return parseISODate(dateStr).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 function formatDateMed(dateStr) {
-  return parseISODate(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return parseISODate(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 function formatDateFull(dateStr) {
-  return parseISODate(dateStr).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  return parseISODate(dateStr).toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 function formatTime12(timeStr) {
-  if (!timeStr) return '';
-  let [h, m] = timeStr.split(':').map(Number);
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  h = h % 12; if (h === 0) h = 12;
+  if (!timeStr) return "";
+  let [h, m] = timeStr.split(":").map(Number);
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  if (h === 0) h = 12;
   return `${h}:${pad2(m)} ${ampm}`;
 }
-function weekdayName(dateStr) { return WEEKDAYS[parseISODate(dateStr).getDay()]; }
+function weekdayName(dateStr) {
+  return WEEKDAYS[parseISODate(dateStr).getDay()];
+}
 function daysBetween(dateStr1, dateStr2) {
-  const a = parseISODate(dateStr1), b = parseISODate(dateStr2);
+  const a = parseISODate(dateStr1),
+    b = parseISODate(dateStr2);
   return Math.round((b - a) / 86400000);
 }
 function timeToMinutes(t) {
   if (!t) return 0;
-  const [h, m] = t.split(':').map(Number);
+  const [h, m] = t.split(":").map(Number);
   return h * 60 + m;
 }
 function relativeDayLabel(dateStr) {
   const diff = daysBetween(todayISO(), dateStr);
-  if (diff === 0) return 'Today';
-  if (diff === 1) return 'Tomorrow';
-  if (diff === -1) return 'Yesterday';
+  if (diff === 0) return "Today";
+  if (diff === 1) return "Tomorrow";
+  if (diff === -1) return "Yesterday";
   if (diff > 1 && diff <= 6) return `In ${diff} days`;
   if (diff < -1 && diff >= -6) return `${Math.abs(diff)} days ago`;
   return formatDateMed(dateStr);
 }
 function relativeDueLabel(dateStr) {
   const diff = daysBetween(todayISO(), dateStr);
-  if (diff === 0) return { text: 'Due today', tone: 'warning' };
-  if (diff === 1) return { text: 'Due tomorrow', tone: 'warning' };
-  if (diff > 1) return { text: `Due in ${diff} days`, tone: diff <= 3 ? 'warning' : 'neutral' };
-  if (diff === -1) return { text: 'Overdue by 1 day', tone: 'danger' };
-  return { text: `Overdue by ${Math.abs(diff)} days`, tone: 'danger' };
+  if (diff === 0) return { text: "Due today", tone: "warning" };
+  if (diff === 1) return { text: "Due tomorrow", tone: "warning" };
+  if (diff > 1)
+    return {
+      text: `Due in ${diff} days`,
+      tone: diff <= 3 ? "warning" : "neutral",
+    };
+  if (diff === -1) return { text: "Overdue by 1 day", tone: "danger" };
+  return { text: `Overdue by ${Math.abs(diff)} days`, tone: "danger" };
 }
 
 function subjectColorVar(name) {
-  const str = (name || '').trim().toLowerCase();
+  const str = (name || "").trim().toLowerCase();
   let hash = 0;
-  for (let i = 0; i < str.length; i++) hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  for (let i = 0; i < str.length; i++)
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
   return `var(--subj-${hash % 10})`;
 }
 
@@ -151,7 +227,7 @@ const DB = {
         return docSnap.data()[key];
       }
     } catch (err) {
-      console.warn('Failed to fetch from Firebase:', err);
+      console.warn("Failed to fetch from Firebase:", err);
     }
     return fallback;
   },
@@ -161,20 +237,32 @@ const DB = {
       const docRef = doc(db, "users", currentUserUid);
       setDoc(docRef, { [key]: value }, { merge: true });
     } catch (err) {
-      console.warn('Failed to save to Firebase:', err);
+      console.warn("Failed to save to Firebase:", err);
     }
   },
 };
 
 function defaultSettings() {
-  return { name: '', institution: '', department: '', theme: 'light', attendanceThreshold: 75 };
+  return {
+    name: "",
+    institution: "",
+    department: "",
+    theme: "light",
+    attendanceThreshold: 75,
+  };
 }
 function defaultGradeScale() {
   return [
-    { grade: 'A+', point: 4.00 }, { grade: 'A', point: 3.75 }, { grade: 'A-', point: 3.50 },
-    { grade: 'B+', point: 3.25 }, { grade: 'B', point: 3.00 }, { grade: 'B-', point: 2.75 },
-    { grade: 'C+', point: 2.50 }, { grade: 'C', point: 2.25 }, { grade: 'D', point: 2.00 },
-    { grade: 'F', point: 0.00 },
+    { grade: "A+", point: 4.0 },
+    { grade: "A", point: 3.75 },
+    { grade: "A-", point: 3.5 },
+    { grade: "B+", point: 3.25 },
+    { grade: "B", point: 3.0 },
+    { grade: "B-", point: 2.75 },
+    { grade: "C+", point: 2.5 },
+    { grade: "C", point: 2.25 },
+    { grade: "D", point: 2.0 },
+    { grade: "F", point: 0.0 },
   ];
 }
 
@@ -198,34 +286,37 @@ function getAllKnownSubjects() {
   return Array.from(set).sort((a, b) => a.localeCompare(b));
 }
 function refreshSubjectsDatalist() {
-  const dl = document.getElementById('subjectsDatalist');
+  const dl = document.getElementById("subjectsDatalist");
   if (!dl) return;
-  dl.innerHTML = getAllKnownSubjects().map((s) => `<option value="${esc(s)}">`).join('');
+  dl.innerHTML = getAllKnownSubjects()
+    .map((s) => `<option value="${esc(s)}">`)
+    .join("");
 }
 
 function emptyStateHtml(iconName, title, desc, actionHtml) {
   return `
     <div class="empty-state">
-      ${icon(iconName, 'icon-lg')}
+      ${icon(iconName, "icon-lg")}
       <h3>${esc(title)}</h3>
       <p>${esc(desc)}</p>
-      ${actionHtml || ''}
+      ${actionHtml || ""}
     </div>
   `;
 }
 
 function showToast(message, type) {
-  type = type || 'success';
-  const container = document.getElementById('toastContainer');
+  type = type || "success";
+  const container = document.getElementById("toastContainer");
   if (!container) return;
-  const t = document.createElement('div');
+  const t = document.createElement("div");
   t.className = `toast toast-${type}`;
-  const iconName = type === 'success' ? 'check' : type === 'error' ? 'xcircle' : 'info';
+  const iconName =
+    type === "success" ? "check" : type === "error" ? "xcircle" : "info";
   t.innerHTML = icon(iconName) + `<span>${esc(message)}</span>`;
   container.appendChild(t);
-  requestAnimationFrame(() => t.classList.add('show'));
+  requestAnimationFrame(() => t.classList.add("show"));
   setTimeout(() => {
-    t.classList.remove('show');
+    t.classList.remove("show");
     setTimeout(() => t.remove(), 250);
   }, 3200);
 }
@@ -233,37 +324,49 @@ function showToast(message, type) {
 let _modalClearTimer = null;
 function openModal(title, bodyHtml, opts) {
   opts = opts || {};
-  if (_modalClearTimer) { clearTimeout(_modalClearTimer); _modalClearTimer = null; }
-  document.getElementById('modalTitle').textContent = title;
-  const body = document.getElementById('modalBody');
+  if (_modalClearTimer) {
+    clearTimeout(_modalClearTimer);
+    _modalClearTimer = null;
+  }
+  document.getElementById("modalTitle").textContent = title;
+  const body = document.getElementById("modalBody");
   body.innerHTML = bodyHtml;
-  document.getElementById('modal').classList.toggle('modal-wide', !!opts.wide);
-  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById("modal").classList.toggle("modal-wide", !!opts.wide);
+  document.getElementById("modalOverlay").classList.add("open");
   refreshSubjectsDatalist();
   if (!opts.noFocus) {
-    const firstInput = body.querySelector('input, select, textarea');
+    const firstInput = body.querySelector("input, select, textarea");
     if (firstInput) setTimeout(() => firstInput.focus(), 60);
   }
 }
 function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById("modalOverlay").classList.remove("open");
   if (_modalClearTimer) clearTimeout(_modalClearTimer);
   _modalClearTimer = setTimeout(() => {
-    document.getElementById('modalBody').innerHTML = '';
+    document.getElementById("modalBody").innerHTML = "";
     _modalClearTimer = null;
   }, 200);
 }
 
 function confirmDialog(message, onConfirm, confirmLabel) {
-  openModal('Please confirm', `
+  openModal(
+    "Please confirm",
+    `
     <p class="confirm-message" style="margin-bottom:20px;">${esc(message)}</p>
     <div class="modal-actions" style="display:flex; gap:12px; justify-content: flex-end; width:100%;">
       <button type="button" class="premium-btn outline-btn" id="confirmCancelBtn">Cancel</button>
-      <button type="button" class="premium-btn danger-btn" id="confirmOkBtn">${esc(confirmLabel || 'Delete')}</button>
+      <button type="button" class="premium-btn danger-btn" id="confirmOkBtn">${esc(confirmLabel || "Delete")}</button>
     </div>
-  `, { noFocus: true });
-  document.getElementById('confirmCancelBtn').addEventListener('click', closeModal);
-  document.getElementById('confirmOkBtn').addEventListener('click', () => { closeModal(); onConfirm(); });
+  `,
+    { noFocus: true },
+  );
+  document
+    .getElementById("confirmCancelBtn")
+    .addEventListener("click", closeModal);
+  document.getElementById("confirmOkBtn").addEventListener("click", () => {
+    closeModal();
+    onConfirm();
+  });
 }
 
 /* =========================================================================
@@ -271,66 +374,77 @@ function confirmDialog(message, onConfirm, confirmLabel) {
    ========================================================================= */
 
 const SECTION_TITLES = {
-  dashboard: 'Dashboard',
-  routine: 'Class routine',
-  assignments: 'Assignments',
-  exams: 'Exam schedule',
-  attendance: 'Attendance',
-  cgpa: 'CGPA calculator',
-  materials: 'Course materials',
+  dashboard: "Dashboard",
+  routine: "Class routine",
+  assignments: "Assignments",
+  exams: "Exam schedule",
+  attendance: "Attendance",
+  cgpa: "CGPA calculator",
+  materials: "Course materials",
 };
 
 const RENDER_FNS = {};
 
 function getCurrentSection() {
-  const active = document.querySelector('.page.active');
-  return active ? active.id.replace('section-', '') : 'dashboard';
+  const active = document.querySelector(".page.active");
+  return active ? active.id.replace("section-", "") : "dashboard";
 }
 function renderCurrentSection() {
   const sec = getCurrentSection();
-  if (typeof RENDER_FNS[sec] === 'function') RENDER_FNS[sec]();
+  if (typeof RENDER_FNS[sec] === "function") RENDER_FNS[sec]();
 }
 
 function navigateTo(section) {
-  document.querySelectorAll('.page').forEach((p) => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item[data-section]').forEach((n) => n.classList.remove('active'));
+  document
+    .querySelectorAll(".page")
+    .forEach((p) => p.classList.remove("active"));
+  document
+    .querySelectorAll(".nav-item[data-section]")
+    .forEach((n) => n.classList.remove("active"));
   const target = document.getElementById(`section-${section}`);
-  if (target) target.classList.add('active');
-  const navItem = document.querySelector(`.nav-item[data-section="${section}"]`);
-  if (navItem) navItem.classList.add('active');
-  document.getElementById('pageTitle').textContent = SECTION_TITLES[section] || 'Coursebook';
+  if (target) target.classList.add("active");
+  const navItem = document.querySelector(
+    `.nav-item[data-section="${section}"]`,
+  );
+  if (navItem) navItem.classList.add("active");
+  document.getElementById("pageTitle").textContent =
+    SECTION_TITLES[section] || "Coursebook";
   closeSidebar();
-  if (typeof RENDER_FNS[section] === 'function') RENDER_FNS[section]();
-  const contentEl = document.querySelector('.content');
+  if (typeof RENDER_FNS[section] === "function") RENDER_FNS[section]();
+  const contentEl = document.querySelector(".content");
   if (contentEl) contentEl.scrollTop = 0;
   window.scrollTo(0, 0);
 }
 
 function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebarBackdrop').classList.add('open');
+  document.getElementById("sidebar").classList.add("open");
+  document.getElementById("sidebarBackdrop").classList.add("open");
 }
 function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarBackdrop').classList.remove('open');
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("sidebarBackdrop").classList.remove("open");
 }
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const isDark = theme === 'dark';
-  const iconHtml = icon(isDark ? 'sun' : 'moon');
-  const topBtn = document.getElementById('themeToggleTop');
+  document.documentElement.setAttribute("data-theme", theme);
+  const isDark = theme === "dark";
+  const iconHtml = icon(isDark ? "sun" : "moon");
+  const topBtn = document.getElementById("themeToggleTop");
   if (topBtn) topBtn.innerHTML = iconHtml;
-  const sideBtn = document.getElementById('themeToggleBtn');
-  if (sideBtn) sideBtn.innerHTML = iconHtml + `<span id="themeToggleLabel">${isDark ? 'Light mode' : 'Dark mode'}</span>`;
+  const sideBtn = document.getElementById("themeToggleBtn");
+  if (sideBtn)
+    sideBtn.innerHTML =
+      iconHtml +
+      `<span id="themeToggleLabel">${isDark ? "Light mode" : "Dark mode"}</span>`;
 }
 
 function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'light' ? 'dark' : 'light';
+  const current =
+    document.documentElement.getAttribute("data-theme") || "light";
+  const next = current === "light" ? "dark" : "light";
   applyTheme(next);
   state.settings.theme = next;
-  DB.set('settings', state.settings);
+  DB.set("settings", state.settings);
 }
 
 /* =========================================================================
@@ -340,7 +454,7 @@ function toggleTheme() {
 let selectedDayIndex = new Date().getDay();
 
 function getRoutineTimeRange() {
-  return { minMin: 8 * 60 + 15, maxMin: 17 * 60 + 45 }; 
+  return { minMin: 8 * 60 + 15, maxMin: 17 * 60 + 45 };
 }
 
 function renderRoutine() {
@@ -351,13 +465,13 @@ function renderRoutine() {
 function renderRoutineGridDesktop() {
   const { minMin, maxMin } = getRoutineTimeRange();
   const totalHeight = maxMin - minMin;
-  const offset = 20; 
+  const offset = 20;
   const renderedHeight = totalHeight + offset + 20;
   const today = WEEKDAYS[new Date().getDay()];
 
   let html = '<div class="routine-corner"></div>';
   WEEKDAYS.forEach((day) => {
-    html += `<div class="routine-day-head ${day === today ? 'is-today' : ''}">${WEEKDAYS_SHORT[WEEKDAYS.indexOf(day)]}</div>`;
+    html += `<div class="routine-day-head ${day === today ? "is-today" : ""}">${WEEKDAYS_SHORT[WEEKDAYS.indexOf(day)]}</div>`;
   });
 
   const slotLabels = [
@@ -368,174 +482,216 @@ function renderRoutineGridDesktop() {
     { time: "1:15 PM", mins: 13 * 60 + 15 },
     { time: "2:45 PM", mins: 14 * 60 + 45 },
     { time: "4:15 PM", mins: 16 * 60 + 15 },
-    { time: "5:45 PM", mins: 17 * 60 + 45 }
+    { time: "5:45 PM", mins: 17 * 60 + 45 },
   ];
 
-  let timeLabelsHtml = '';
-  slotLabels.forEach(slot => {
+  let timeLabelsHtml = "";
+  slotLabels.forEach((slot) => {
     timeLabelsHtml += `<span class="routine-time-label" style="top:${slot.mins - minMin + offset}px; margin-top:-8px; font-weight:600; font-size:11px;">${slot.time}</span>`;
   });
   html += `<div class="routine-time-col" style="height:${renderedHeight}px">${timeLabelsHtml}</div>`;
 
   WEEKDAYS.forEach((day) => {
     const dayEvents = state.routine.filter((r) => r.day === day);
-    const eventsHtml = dayEvents.map((ev) => {
-      const top = clamp(timeToMinutes(ev.startTime) - minMin, 0, totalHeight) + offset;
-      const height = Math.max(timeToMinutes(ev.endTime) - timeToMinutes(ev.startTime), 26);
-      return `<div class="routine-event" style="top:${top}px;height:${height}px;border-left-color:${subjectColorVar(ev.subject)}" data-id="${ev.id}">
+    const eventsHtml = dayEvents
+      .map((ev) => {
+        const top =
+          clamp(timeToMinutes(ev.startTime) - minMin, 0, totalHeight) + offset;
+        const height = Math.max(
+          timeToMinutes(ev.endTime) - timeToMinutes(ev.startTime),
+          26,
+        );
+        return `<div class="routine-event" style="top:${top}px;height:${height}px;border-left-color:${subjectColorVar(ev.subject)}" data-id="${ev.id}">
         <div class="ev-title">${esc(ev.subject)}</div>
         <div class="ev-meta">${formatTime12(ev.startTime)}–${formatTime12(ev.endTime)}</div>
       </div>`;
-    }).join('');
-    
-    html += `<div class="routine-day-col ${day === today ? 'is-today' : ''}" style="height:${renderedHeight}px; background: none; border-right: 1px solid var(--rule-light); position: relative;">
-       ${slotLabels.map(s => `<div style="position: absolute; top: ${s.mins - minMin + offset}px; left: 0; right: 0; height: 1px; background: var(--rule-light); opacity: 0.6;"></div>`).join('')}
+      })
+      .join("");
+
+    html += `<div class="routine-day-col ${day === today ? "is-today" : ""}" style="height:${renderedHeight}px; background: none; border-right: 1px solid var(--rule-light); position: relative;">
+       ${slotLabels.map((s) => `<div style="position: absolute; top: ${s.mins - minMin + offset}px; left: 0; right: 0; height: 1px; background: var(--rule-light); opacity: 0.6;"></div>`).join("")}
        ${eventsHtml}
     </div>`;
   });
 
-  const grid = document.getElementById('routineGrid');
+  const grid = document.getElementById("routineGrid");
   grid.innerHTML = html;
-  grid.querySelectorAll('.routine-event').forEach((el) => {
-    el.addEventListener('click', () => openRoutineForm(el.dataset.id));
+  grid.querySelectorAll(".routine-event").forEach((el) => {
+    el.addEventListener("click", () => openRoutineForm(el.dataset.id));
   });
 }
 
 function renderRoutineMobile() {
-  const tabsContainer = document.getElementById('dayTabs');
+  const tabsContainer = document.getElementById("dayTabs");
   const todayIdx = new Date().getDay();
-  tabsContainer.innerHTML = WEEKDAYS.map((day, i) => `
-    <button class="day-tab ${i === selectedDayIndex ? 'active' : ''} ${i === todayIdx ? 'is-today' : ''}" data-day="${i}">${WEEKDAYS_SHORT[i]}</button>
-  `).join('');
-  tabsContainer.querySelectorAll('.day-tab').forEach((btn) => {
-    btn.addEventListener('click', () => { selectedDayIndex = Number(btn.dataset.day); renderRoutineMobile(); });
+  tabsContainer.innerHTML = WEEKDAYS.map(
+    (day, i) => `
+    <button class="day-tab ${i === selectedDayIndex ? "active" : ""} ${i === todayIdx ? "is-today" : ""}" data-day="${i}">${WEEKDAYS_SHORT[i]}</button>
+  `,
+  ).join("");
+  tabsContainer.querySelectorAll(".day-tab").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      selectedDayIndex = Number(btn.dataset.day);
+      renderRoutineMobile();
+    });
   });
 
   const day = WEEKDAYS[selectedDayIndex];
-  const dayEvents = state.routine.filter((r) => r.day === day).sort((a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime));
-  const listContainer = document.getElementById('routineDayList');
+  const dayEvents = state.routine
+    .filter((r) => r.day === day)
+    .sort((a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime));
+  const listContainer = document.getElementById("routineDayList");
   if (!dayEvents.length) {
-    listContainer.innerHTML = emptyStateHtml('calendar', 'No classes', `Nothing scheduled for ${day}. Add a class to fill this in.`, `<button class="premium-btn primary-btn" onclick="openRoutineForm()">${icon('plus')}<span>Add class</span></button>`);
+    listContainer.innerHTML = emptyStateHtml(
+      "calendar",
+      "No classes",
+      `Nothing scheduled for ${day}. Add a class to fill this in.`,
+      `<button class="premium-btn primary-btn" onclick="openRoutineForm()">${icon("plus")}<span>Add class</span></button>`,
+    );
     return;
   }
-  listContainer.innerHTML = dayEvents.map((ev) => `
+  listContainer.innerHTML = dayEvents
+    .map(
+      (ev) => `
     <div class="routine-list-item">
       <div class="routine-list-time">${formatTime12(ev.startTime)}<br>${formatTime12(ev.endTime)}</div>
       <div class="routine-list-bar" style="background:${subjectColorVar(ev.subject)}"></div>
       <div class="routine-list-body">
         <div class="rt-title">${esc(ev.subject)}</div>
         <div class="rt-meta">
-          ${ev.room ? `<span>${icon('mappin', 'icon-sm')}${esc(ev.room)}</span>` : ''}
-          ${ev.teacher ? `<span>${icon('user', 'icon-sm')}${esc(ev.teacher)}</span>` : ''}
+          ${ev.room ? `<span>${icon("mappin", "icon-sm")}${esc(ev.room)}</span>` : ""}
+          ${ev.teacher ? `<span>${icon("user", "icon-sm")}${esc(ev.teacher)}</span>` : ""}
         </div>
       </div>
       <div class="ledger-row-actions">
-        <button class="icon-btn" data-edit="${ev.id}" aria-label="Edit class">${icon('edit', 'icon-sm')}</button>
-        <button class="icon-btn" data-del="${ev.id}" aria-label="Delete class">${icon('trash', 'icon-sm')}</button>
+        <button class="icon-btn" data-edit="${ev.id}" aria-label="Edit class">${icon("edit", "icon-sm")}</button>
+        <button class="icon-btn" data-del="${ev.id}" aria-label="Delete class">${icon("trash", "icon-sm")}</button>
       </div>
     </div>
-  `).join('');
-  listContainer.querySelectorAll('[data-edit]').forEach((b) => b.addEventListener('click', () => openRoutineForm(b.dataset.edit)));
-  listContainer.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => handleDeleteRoutine(b.dataset.del)));
+  `,
+    )
+    .join("");
+  listContainer
+    .querySelectorAll("[data-edit]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openRoutineForm(b.dataset.edit)),
+    );
+  listContainer
+    .querySelectorAll("[data-del]")
+    .forEach((b) =>
+      b.addEventListener("click", () => handleDeleteRoutine(b.dataset.del)),
+    );
 }
 
 function openRoutineForm(id) {
-  const entry = id ? state.routine.find((r) => String(r.id) === String(id)) : null;
+  const entry = id
+    ? state.routine.find((r) => String(r.id) === String(id))
+    : null;
   const isEdit = !!entry;
-  
+
   const slots = [
     { val: "08:15-09:45", label: "8:15 AM - 9:45 AM" },
     { val: "09:45-11:15", label: "9:45 AM - 11:15 AM" },
     { val: "11:15-12:45", label: "11:15 AM - 12:45 PM" },
     { val: "13:15-14:45", label: "1:15 PM - 2:45 PM" },
     { val: "14:45-16:15", label: "2:45 PM - 4:15 PM" },
-    { val: "16:15-17:45", label: "4:15 PM - 5:45 PM" }
+    { val: "16:15-17:45", label: "4:15 PM - 5:45 PM" },
   ];
-  const currentSlot = entry ? `${entry.startTime}-${entry.endTime}` : "08:15-09:45";
+  const currentSlot = entry
+    ? `${entry.startTime}-${entry.endTime}`
+    : "08:15-09:45";
 
-  openModal(isEdit ? 'Edit class' : 'Add class', `
+  openModal(
+    isEdit ? "Edit class" : "Add class",
+    `
     <form id="routineForm">
       <div class="form-group">
         <label>Subject</label>
-        <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Data Structures" value="${entry ? esc(entry.subject) : ''}">
+        <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Data Structures" value="${entry ? esc(entry.subject) : ""}">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Day</label>
           <select class="select" name="day">
-            ${WEEKDAYS.map((d) => `<option value="${d}" ${entry && entry.day === d ? 'selected' : ''}>${d}</option>`).join('')}
+            ${WEEKDAYS.map((d) => `<option value="${d}" ${entry && entry.day === d ? "selected" : ""}>${d}</option>`).join("")}
           </select>
         </div>
         <div class="form-group">
           <label>Room (optional)</label>
-          <input class="input" name="room" placeholder="e.g. Room 304" value="${entry ? esc(entry.room || '') : ''}">
+          <input class="input" name="room" placeholder="e.g. Room 304" value="${entry ? esc(entry.room || "") : ""}">
         </div>
       </div>
       
       <div class="form-group">
         <label>Class Time Slot</label>
         <select class="select" name="timeSlot">
-          ${slots.map(s => `<option value="${s.val}" ${currentSlot === s.val ? 'selected' : ''}>${s.label}</option>`).join('')}
+          ${slots.map((s) => `<option value="${s.val}" ${currentSlot === s.val ? "selected" : ""}>${s.label}</option>`).join("")}
         </select>
       </div>
 
       <div class="form-group">
         <label>Teacher (optional)</label>
-        <input class="input" name="teacher" placeholder="e.g. Dr. Rahman" value="${entry ? esc(entry.teacher || '') : ''}">
+        <input class="input" name="teacher" placeholder="e.g. Dr. Rahman" value="${entry ? esc(entry.teacher || "") : ""}">
       </div>
-      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? 'space-between' : 'flex-end'}; width:100%;">
-        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="routineDeleteBtn">Delete</button>` : ''}
-        <button type="submit" class="premium-btn primary-btn">${isEdit ? 'Save changes' : 'Add class'}</button>
+      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? "space-between" : "flex-end"}; width:100%;">
+        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="routineDeleteBtn">Delete</button>` : ""}
+        <button type="submit" class="premium-btn primary-btn">${isEdit ? "Save changes" : "Add class"}</button>
       </div>
     </form>
-  `);
-  
-  document.getElementById('routineForm').addEventListener('submit', (e) => { 
-      e.preventDefault(); 
-      saveRoutineFromForm(e.target, id); 
+  `,
+  );
+
+  document.getElementById("routineForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    saveRoutineFromForm(e.target, id);
   });
-  
+
   if (isEdit) {
-      document.getElementById('routineDeleteBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          handleDeleteRoutine(id);
+    document
+      .getElementById("routineDeleteBtn")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        handleDeleteRoutine(id);
       });
   }
 }
 
 function saveRoutineFromForm(form, id) {
   const fd = new FormData(form);
-  const timeSlot = fd.get('timeSlot').split('-');
-  
+  const timeSlot = fd.get("timeSlot").split("-");
+
   const data = {
-    subject: fd.get('subject').trim(),
-    day: fd.get('day'),
-    room: fd.get('room').trim(),
-    teacher: fd.get('teacher').trim(),
-    startTime: timeSlot[0], 
+    subject: fd.get("subject").trim(),
+    day: fd.get("day"),
+    room: fd.get("room").trim(),
+    teacher: fd.get("teacher").trim(),
+    startTime: timeSlot[0],
     endTime: timeSlot[1],
   };
-  
+
   if (id) {
     const idx = state.routine.findIndex((r) => String(r.id) === String(id));
     state.routine[idx] = { ...state.routine[idx], ...data };
   } else {
     state.routine.push({ id: uid(), ...data });
   }
-  
+
   renderRoutine();
   closeModal();
-  showToast(id ? 'Class updated' : 'Class added');
-  DB.set('routine-entries', state.routine); 
+  showToast(id ? "Class updated" : "Class added");
+  DB.set("routine-entries", state.routine);
 }
 
 function handleDeleteRoutine(id) {
-  confirmDialog("Delete this class from your routine? This can't be undone.", () => {
-    state.routine = state.routine.filter((r) => String(r.id) !== String(id));
-    renderRoutine();
-    showToast('Class deleted');
-    DB.set('routine-entries', state.routine);
-  });
+  confirmDialog(
+    "Delete this class from your routine? This can't be undone.",
+    () => {
+      state.routine = state.routine.filter((r) => String(r.id) !== String(id));
+      renderRoutine();
+      showToast("Class deleted");
+      DB.set("routine-entries", state.routine);
+    },
+  );
 }
 
 RENDER_FNS.routine = renderRoutine;
@@ -544,119 +700,180 @@ RENDER_FNS.routine = renderRoutine;
    ASSIGNMENTS
    ========================================================================= */
 
-const assignmentFilters = { status: 'all', subject: 'all' };
+const assignmentFilters = { status: "all", subject: "all" };
 
 function getFilteredAssignments() {
   return state.assignments.filter((a) => {
-    if (assignmentFilters.status !== 'all' && a.status !== assignmentFilters.status) return false;
-    if (assignmentFilters.subject !== 'all' && a.subject !== assignmentFilters.subject) return false;
+    if (
+      assignmentFilters.status !== "all" &&
+      a.status !== assignmentFilters.status
+    )
+      return false;
+    if (
+      assignmentFilters.subject !== "all" &&
+      a.subject !== assignmentFilters.subject
+    )
+      return false;
     return true;
   });
 }
 
 function populateAssignmentSubjectFilter() {
-  const sel = document.getElementById('assignmentSubjectFilter');
+  const sel = document.getElementById("assignmentSubjectFilter");
   const current = sel.value;
-  const subjects = Array.from(new Set(state.assignments.map((a) => a.subject))).sort((a, b) => a.localeCompare(b));
-  sel.innerHTML = '<option value="all">All subjects</option>' + subjects.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  const subjects = Array.from(
+    new Set(state.assignments.map((a) => a.subject)),
+  ).sort((a, b) => a.localeCompare(b));
+  sel.innerHTML =
+    '<option value="all">All subjects</option>' +
+    subjects
+      .map((s) => `<option value="${esc(s)}">${esc(s)}</option>`)
+      .join("");
   if (subjects.includes(current)) sel.value = current;
 }
 
 function renderAssignments() {
   populateAssignmentSubjectFilter();
-  const container = document.getElementById('assignmentsContainer');
+  const container = document.getElementById("assignmentsContainer");
 
   if (!state.assignments.length) {
-    container.innerHTML = emptyStateHtml('clipboard', 'No assignments yet', 'Add your first assignment to start tracking deadlines.', `<button class="premium-btn primary-btn" onclick="openAssignmentForm()">${icon('plus')}<span>Add assignment</span></button>`);
+    container.innerHTML = emptyStateHtml(
+      "clipboard",
+      "No assignments yet",
+      "Add your first assignment to start tracking deadlines.",
+      `<button class="premium-btn primary-btn" onclick="openAssignmentForm()">${icon("plus")}<span>Add assignment</span></button>`,
+    );
     return;
   }
 
   const list = getFilteredAssignments();
   if (!list.length) {
-    container.innerHTML = emptyStateHtml('filter', 'No matches', 'No assignments match the current filters.');
+    container.innerHTML = emptyStateHtml(
+      "filter",
+      "No matches",
+      "No assignments match the current filters.",
+    );
     return;
   }
 
-  const overdue = [], dueSoon = [], upcoming = [], completed = [];
+  const overdue = [],
+    dueSoon = [],
+    upcoming = [],
+    completed = [];
   list.forEach((a) => {
-    if (a.status === 'completed') { completed.push(a); return; }
+    if (a.status === "completed") {
+      completed.push(a);
+      return;
+    }
     const diff = daysBetween(todayISO(), a.dueDate);
     if (diff < 0) overdue.push(a);
     else if (diff <= 3) dueSoon.push(a);
     else upcoming.push(a);
   });
-  [overdue, dueSoon, upcoming].forEach((arr) => arr.sort((a, b) => a.dueDate.localeCompare(b.dueDate)));
+  [overdue, dueSoon, upcoming].forEach((arr) =>
+    arr.sort((a, b) => a.dueDate.localeCompare(b.dueDate)),
+  );
   completed.sort((a, b) => b.dueDate.localeCompare(a.dueDate));
 
-  let html = '';
-  if (overdue.length) html += assignmentSectionHtml('Overdue', overdue);
-  if (dueSoon.length) html += assignmentSectionHtml('Due soon', dueSoon);
-  if (upcoming.length) html += assignmentSectionHtml('Upcoming', upcoming);
-  if (completed.length) html += assignmentSectionHtml('Completed', completed);
+  let html = "";
+  if (overdue.length) html += assignmentSectionHtml("Overdue", overdue);
+  if (dueSoon.length) html += assignmentSectionHtml("Due soon", dueSoon);
+  if (upcoming.length) html += assignmentSectionHtml("Upcoming", upcoming);
+  if (completed.length) html += assignmentSectionHtml("Completed", completed);
   container.innerHTML = html;
   attachAssignmentHandlers(container);
 }
 
 function assignmentSectionHtml(label, items) {
-  return `<div class="ledger-section-label">${esc(label)}</div><div class="ledger">${items.map(assignmentRowHtml).join('')}</div>`;
+  return `<div class="ledger-section-label">${esc(label)}</div><div class="ledger">${items.map(assignmentRowHtml).join("")}</div>`;
 }
 
 function assignmentRowHtml(a) {
-  const isDone = a.status === 'completed';
+  const isDone = a.status === "completed";
   const due = relativeDueLabel(a.dueDate);
-  const dueColor = due.tone === 'danger' ? 'var(--clay)' : due.tone === 'warning' ? 'var(--brass)' : 'var(--text-tertiary)';
-  const priorityBadge = { high: 'badge-danger', medium: 'badge-warning', low: 'badge-neutral' }[a.priority] || 'badge-neutral';
+  const dueColor =
+    due.tone === "danger"
+      ? "var(--clay)"
+      : due.tone === "warning"
+        ? "var(--brass)"
+        : "var(--text-tertiary)";
+  const priorityBadge =
+    { high: "badge-danger", medium: "badge-warning", low: "badge-neutral" }[
+      a.priority
+    ] || "badge-neutral";
   return `
-  <div class="ledger-row ${isDone ? 'is-done' : ''}" style="border-left-color:${subjectColorVar(a.subject)}">
-    <button class="check-toggle ${isDone ? 'checked' : ''}" data-toggle="${a.id}" aria-label="Mark complete">${icon('check')}</button>
+  <div class="ledger-row ${isDone ? "is-done" : ""}" style="border-left-color:${subjectColorVar(a.subject)}">
+    <button class="check-toggle ${isDone ? "checked" : ""}" data-toggle="${a.id}" aria-label="Mark complete">${icon("check")}</button>
     <div class="ledger-row-main">
-      <div class="ledger-row-title ${isDone ? 'done-text' : ''}">
+      <div class="ledger-row-title ${isDone ? "done-text" : ""}">
         ${esc(a.title)}
         <span class="badge ${priorityBadge}">${esc(a.priority)}</span>
       </div>
       <div class="ledger-row-meta">
-        <span>${icon('book', 'icon-sm')}${esc(a.subject)}</span>
-        ${!isDone
-          ? `<span style="color:${dueColor}">${icon('clock', 'icon-sm')}${due.text}</span>`
-          : `<span>${icon('clock', 'icon-sm')}Due ${formatDateMed(a.dueDate)}</span>`}
+        <span>${icon("book", "icon-sm")}${esc(a.subject)}</span>
+        ${
+          !isDone
+            ? `<span style="color:${dueColor}">${icon("clock", "icon-sm")}${due.text}</span>`
+            : `<span>${icon("clock", "icon-sm")}Due ${formatDateMed(a.dueDate)}</span>`
+        }
       </div>
-      ${a.description ? `<div class="ledger-row-desc">${esc(a.description)}</div>` : ''}
+      ${a.description ? `<div class="ledger-row-desc">${esc(a.description)}</div>` : ""}
     </div>
     <div class="ledger-row-actions">
-      <button class="icon-btn" data-edit="${a.id}" aria-label="Edit assignment">${icon('edit', 'icon-sm')}</button>
-      <button class="icon-btn" data-del="${a.id}" aria-label="Delete assignment">${icon('trash', 'icon-sm')}</button>
+      <button class="icon-btn" data-edit="${a.id}" aria-label="Edit assignment">${icon("edit", "icon-sm")}</button>
+      <button class="icon-btn" data-del="${a.id}" aria-label="Delete assignment">${icon("trash", "icon-sm")}</button>
     </div>
   </div>`;
 }
 
 function attachAssignmentHandlers(container) {
-  container.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => toggleAssignmentComplete(b.dataset.toggle)));
-  container.querySelectorAll('[data-edit]').forEach((b) => b.addEventListener('click', () => openAssignmentForm(b.dataset.edit)));
-  container.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => handleDeleteAssignment(b.dataset.del)));
+  container
+    .querySelectorAll("[data-toggle]")
+    .forEach((b) =>
+      b.addEventListener("click", () =>
+        toggleAssignmentComplete(b.dataset.toggle),
+      ),
+    );
+  container
+    .querySelectorAll("[data-edit]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openAssignmentForm(b.dataset.edit)),
+    );
+  container
+    .querySelectorAll("[data-del]")
+    .forEach((b) =>
+      b.addEventListener("click", () => handleDeleteAssignment(b.dataset.del)),
+    );
 }
 
 function toggleAssignmentComplete(id) {
   const a = state.assignments.find((x) => String(x.id) === String(id));
   if (!a) return;
-  a.status = a.status === 'completed' ? 'pending' : 'completed';
+  a.status = a.status === "completed" ? "pending" : "completed";
   renderAssignments();
-  showToast(a.status === 'completed' ? 'Assignment completed' : 'Marked as pending');
-  DB.set('assignments-list', state.assignments);
+  showToast(
+    a.status === "completed" ? "Assignment completed" : "Marked as pending",
+  );
+  DB.set("assignments-list", state.assignments);
 }
 
 function openAssignmentForm(id) {
-  const a = id ? state.assignments.find((x) => String(x.id) === String(id)) : null;
+  const a = id
+    ? state.assignments.find((x) => String(x.id) === String(id))
+    : null;
   const isEdit = !!a;
-  openModal(isEdit ? 'Edit assignment' : 'Add assignment', `
+  openModal(
+    isEdit ? "Edit assignment" : "Add assignment",
+    `
     <form id="assignmentForm">
       <div class="form-group">
         <label>Title</label>
-        <input class="input" name="title" required placeholder="e.g. Lab report 3" value="${a ? esc(a.title) : ''}">
+        <input class="input" name="title" required placeholder="e.g. Lab report 3" value="${a ? esc(a.title) : ""}">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Subject</label>
-          <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Physics II" value="${a ? esc(a.subject) : ''}">
+          <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Physics II" value="${a ? esc(a.subject) : ""}">
         </div>
         <div class="form-group">
           <label>Due date</label>
@@ -667,31 +884,46 @@ function openAssignmentForm(id) {
         <div class="form-group">
           <label>Priority</label>
           <select class="select" name="priority">
-            ${['low', 'medium', 'high'].map((p) => `<option value="${p}" ${a && a.priority === p ? 'selected' : ''}>${p[0].toUpperCase() + p.slice(1)}</option>`).join('')}
+            ${["low", "medium", "high"].map((p) => `<option value="${p}" ${a && a.priority === p ? "selected" : ""}>${p[0].toUpperCase() + p.slice(1)}</option>`).join("")}
           </select>
         </div>
         <div class="form-group">
           <label>Status</label>
           <select class="select" name="status">
-            ${[['pending', 'Pending'], ['in-progress', 'In progress'], ['completed', 'Completed']].map(([v, l]) => `<option value="${v}" ${a && a.status === v ? 'selected' : ''}>${l}</option>`).join('')}
+            ${[
+              ["pending", "Pending"],
+              ["in-progress", "In progress"],
+              ["completed", "Completed"],
+            ]
+              .map(
+                ([v, l]) =>
+                  `<option value="${v}" ${a && a.status === v ? "selected" : ""}>${l}</option>`,
+              )
+              .join("")}
           </select>
         </div>
       </div>
       <div class="form-group">
         <label>Notes (optional)</label>
-        <textarea class="textarea" name="description" placeholder="Details, requirements, or links">${a ? esc(a.description || '') : ''}</textarea>
+        <textarea class="textarea" name="description" placeholder="Details, requirements, or links">${a ? esc(a.description || "") : ""}</textarea>
       </div>
-      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? 'space-between' : 'flex-end'}; width:100%;">
-        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="assignmentDeleteBtn">Delete</button>` : ''}
-        <button type="submit" class="premium-btn primary-btn">${isEdit ? 'Save changes' : 'Add assignment'}</button>
+      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? "space-between" : "flex-end"}; width:100%;">
+        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="assignmentDeleteBtn">Delete</button>` : ""}
+        <button type="submit" class="premium-btn primary-btn">${isEdit ? "Save changes" : "Add assignment"}</button>
       </div>
     </form>
-  `);
-  document.getElementById('assignmentForm').addEventListener('submit', (e) => { e.preventDefault(); saveAssignmentFromForm(e.target, id); });
+  `,
+  );
+  document.getElementById("assignmentForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    saveAssignmentFromForm(e.target, id);
+  });
   if (isEdit) {
-      document.getElementById('assignmentDeleteBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          handleDeleteAssignment(id);
+    document
+      .getElementById("assignmentDeleteBtn")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        handleDeleteAssignment(id);
       });
   }
 }
@@ -699,31 +931,37 @@ function openAssignmentForm(id) {
 function saveAssignmentFromForm(form, id) {
   const fd = new FormData(form);
   const data = {
-    title: fd.get('title').trim(),
-    subject: fd.get('subject').trim(),
-    dueDate: fd.get('dueDate'),
-    priority: fd.get('priority'),
-    status: fd.get('status'),
-    description: fd.get('description').trim(),
+    title: fd.get("title").trim(),
+    subject: fd.get("subject").trim(),
+    dueDate: fd.get("dueDate"),
+    priority: fd.get("priority"),
+    status: fd.get("status"),
+    description: fd.get("description").trim(),
   };
   if (id) {
     const idx = state.assignments.findIndex((x) => String(x.id) === String(id));
     state.assignments[idx] = { ...state.assignments[idx], ...data };
   } else {
-    state.assignments.push({ id: uid(), ...data, createdAt: new Date().toISOString() });
+    state.assignments.push({
+      id: uid(),
+      ...data,
+      createdAt: new Date().toISOString(),
+    });
   }
   renderAssignments();
   closeModal();
-  showToast(id ? 'Assignment updated' : 'Assignment added');
-  DB.set('assignments-list', state.assignments);
+  showToast(id ? "Assignment updated" : "Assignment added");
+  DB.set("assignments-list", state.assignments);
 }
 
 function handleDeleteAssignment(id) {
   confirmDialog("Delete this assignment? This can't be undone.", () => {
-    state.assignments = state.assignments.filter((x) => String(x.id) !== String(id));
+    state.assignments = state.assignments.filter(
+      (x) => String(x.id) !== String(id),
+    );
     renderAssignments();
-    showToast('Assignment deleted');
-    DB.set('assignments-list', state.assignments);
+    showToast("Assignment deleted");
+    DB.set("assignments-list", state.assignments);
   });
 }
 
@@ -733,15 +971,29 @@ RENDER_FNS.assignments = renderAssignments;
    EXAM SCHEDULE
    ========================================================================= */
 
-const EXAM_TYPES = ['Quiz', 'Class Test', 'Midterm', 'Final', 'Presentation', 'Viva', 'Other'];
+const EXAM_TYPES = [
+  "Quiz",
+  "Class Test",
+  "Midterm",
+  "Final",
+  "Presentation",
+  "Viva",
+  "Other",
+];
 
 function getUpcomingExams() {
   return state.exams
     .filter((e) => daysBetween(todayISO(), e.date) >= 0)
-    .sort((a, b) => a.date.localeCompare(b.date) || timeToMinutes(a.startTime) - timeToMinutes(b.startTime));
+    .sort(
+      (a, b) =>
+        a.date.localeCompare(b.date) ||
+        timeToMinutes(a.startTime) - timeToMinutes(b.startTime),
+    );
 }
 function getPastExams() {
-  return state.exams.filter((e) => daysBetween(todayISO(), e.date) < 0).sort((a, b) => b.date.localeCompare(a.date));
+  return state.exams
+    .filter((e) => daysBetween(todayISO(), e.date) < 0)
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function renderExams() {
@@ -750,14 +1002,17 @@ function renderExams() {
 }
 
 function renderNextExamBanner() {
-  const banner = document.getElementById('nextExamBanner');
+  const banner = document.getElementById("nextExamBanner");
   const upcoming = getUpcomingExams();
-  if (!upcoming.length) { banner.innerHTML = ''; return; }
+  if (!upcoming.length) {
+    banner.innerHTML = "";
+    return;
+  }
   const next = upcoming[0];
   const d = daysBetween(todayISO(), next.date);
-  const countdown = d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : `In ${d} days`;
-  const dotColor = d <= 3 ? 'var(--brass)' : 'var(--pine)';
-  
+  const countdown = d === 0 ? "Today" : d === 1 ? "Tomorrow" : `In ${d} days`;
+  const dotColor = d <= 3 ? "var(--brass)" : "var(--pine)";
+
   banner.innerHTML = `
     <div class="dash-panel" style="margin-bottom: var(--space-6); padding: 20px 24px; display: flex; align-items: center; gap: 20px; border-left: 4px solid ${dotColor};">
       <div style="flex: 1;">
@@ -769,9 +1024,9 @@ function renderNextExamBanner() {
           ${esc(next.subject)} <span class="badge badge-neutral">${esc(next.examType)}</span>
         </div>
         <div style="margin-top:10px; font-size:0.95rem; color: var(--text-tertiary); display:flex; gap:15px; flex-wrap:wrap;">
-          <span style="display:flex; align-items:center; gap:5px;">${icon('calendar', 'icon-sm')} ${formatDateFull(next.date)}</span>
-          ${next.startTime ? `<span style="display:flex; align-items:center; gap:5px;">${icon('clock', 'icon-sm')} ${formatTime12(next.startTime)}</span>` : ''}
-          ${next.room ? `<span style="display:flex; align-items:center; gap:5px;">${icon('mappin', 'icon-sm')} ${esc(next.room)}</span>` : ''}
+          <span style="display:flex; align-items:center; gap:5px;">${icon("calendar", "icon-sm")} ${formatDateFull(next.date)}</span>
+          ${next.startTime ? `<span style="display:flex; align-items:center; gap:5px;">${icon("clock", "icon-sm")} ${formatTime12(next.startTime)}</span>` : ""}
+          ${next.room ? `<span style="display:flex; align-items:center; gap:5px;">${icon("mappin", "icon-sm")} ${esc(next.room)}</span>` : ""}
         </div>
       </div>
     </div>
@@ -779,19 +1034,24 @@ function renderNextExamBanner() {
 }
 
 function renderExamsList() {
-  const container = document.getElementById('examsContainer');
+  const container = document.getElementById("examsContainer");
   const upcoming = getUpcomingExams();
   const past = getPastExams();
   if (!upcoming.length && !past.length) {
-    container.innerHTML = emptyStateHtml('examfile', 'No exams scheduled', 'Add your first exam to start tracking dates and see the countdown here.', `<button class="premium-btn primary-btn" onclick="openExamForm()">${icon('plus')}<span>Add exam</span></button>`);
+    container.innerHTML = emptyStateHtml(
+      "examfile",
+      "No exams scheduled",
+      "Add your first exam to start tracking dates and see the countdown here.",
+      `<button class="premium-btn primary-btn" onclick="openExamForm()">${icon("plus")}<span>Add exam</span></button>`,
+    );
     return;
   }
-  let html = '';
+  let html = "";
   if (upcoming.length) {
-    html += `<div class="ledger-section-label">Upcoming</div><div class="ledger">${upcoming.map((ex) => examRowHtml(ex)).join('')}</div>`;
+    html += `<div class="ledger-section-label">Upcoming</div><div class="ledger">${upcoming.map((ex) => examRowHtml(ex)).join("")}</div>`;
   }
   if (past.length) {
-    html += `<div class="ledger-section-label">Past</div><div class="ledger">${past.map((ex) => examRowHtml(ex)).join('')}</div>`;
+    html += `<div class="ledger-section-label">Past</div><div class="ledger">${past.map((ex) => examRowHtml(ex)).join("")}</div>`;
   }
   container.innerHTML = html;
   attachExamRowHandlers(container);
@@ -807,38 +1067,48 @@ function examRowHtml(ex) {
         <span class="badge badge-neutral">${esc(ex.examType)}</span>
       </div>
       <div class="ledger-row-meta">
-        <span>${icon('calendar', 'icon-sm')}${formatDateLong(ex.date)}</span>
-        ${ex.startTime ? `<span>${icon('clock', 'icon-sm')}${formatTime12(ex.startTime)}${ex.endTime ? '–' + formatTime12(ex.endTime) : ''}</span>` : ''}
-        ${ex.room ? `<span>${icon('mappin', 'icon-sm')}${esc(ex.room)}</span>` : ''}
+        <span>${icon("calendar", "icon-sm")}${formatDateLong(ex.date)}</span>
+        ${ex.startTime ? `<span>${icon("clock", "icon-sm")}${formatTime12(ex.startTime)}${ex.endTime ? "–" + formatTime12(ex.endTime) : ""}</span>` : ""}
+        ${ex.room ? `<span>${icon("mappin", "icon-sm")}${esc(ex.room)}</span>` : ""}
       </div>
-      ${ex.syllabus ? `<div class="ledger-row-desc">${esc(ex.syllabus)}</div>` : ''}
+      ${ex.syllabus ? `<div class="ledger-row-desc">${esc(ex.syllabus)}</div>` : ""}
     </div>
     <div class="ledger-row-actions">
-      <button class="icon-btn" data-edit="${ex.id}" aria-label="Edit exam">${icon('edit', 'icon-sm')}</button>
-      <button class="icon-btn" data-del="${ex.id}" aria-label="Delete exam">${icon('trash', 'icon-sm')}</button>
+      <button class="icon-btn" data-edit="${ex.id}" aria-label="Edit exam">${icon("edit", "icon-sm")}</button>
+      <button class="icon-btn" data-del="${ex.id}" aria-label="Delete exam">${icon("trash", "icon-sm")}</button>
     </div>
   </div>`;
 }
 
 function attachExamRowHandlers(container) {
-  container.querySelectorAll('[data-edit]').forEach((b) => b.addEventListener('click', () => openExamForm(b.dataset.edit)));
-  container.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => handleDeleteExam(b.dataset.del)));
+  container
+    .querySelectorAll("[data-edit]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openExamForm(b.dataset.edit)),
+    );
+  container
+    .querySelectorAll("[data-del]")
+    .forEach((b) =>
+      b.addEventListener("click", () => handleDeleteExam(b.dataset.del)),
+    );
 }
 
 function openExamForm(id) {
   const exam = id ? state.exams.find((e) => String(e.id) === String(id)) : null;
   const isEdit = !!exam;
-  openModal(isEdit ? 'Edit exam' : 'Add exam', `
+  openModal(
+    isEdit ? "Edit exam" : "Add exam",
+    `
     <form id="examForm">
       <div class="form-group">
         <label>Subject</label>
-        <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Database Systems" value="${exam ? esc(exam.subject) : ''}">
+        <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Database Systems" value="${exam ? esc(exam.subject) : ""}">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Exam type</label>
           <select class="select" name="examType">
-            ${EXAM_TYPES.map((t) => `<option ${exam && exam.examType === t ? 'selected' : ''}>${t}</option>`).join('')}
+            ${EXAM_TYPES.map((t) => `<option ${exam && exam.examType === t ? "selected" : ""}>${t}</option>`).join("")}
           </select>
         </div>
         <div class="form-group">
@@ -849,51 +1119,60 @@ function openExamForm(id) {
       <div class="form-row">
         <div class="form-group">
           <label>Start time (optional)</label>
-          <input class="input" type="time" name="startTime" value="${exam ? exam.startTime || '' : ''}">
+          <input class="input" type="time" name="startTime" value="${exam ? exam.startTime || "" : ""}">
         </div>
         <div class="form-group">
           <label>End time (optional)</label>
-          <input class="input" type="time" name="endTime" value="${exam ? exam.endTime || '' : ''}">
+          <input class="input" type="time" name="endTime" value="${exam ? exam.endTime || "" : ""}">
         </div>
       </div>
       <div class="form-group">
         <label>Room (optional)</label>
-        <input class="input" name="room" placeholder="e.g. Exam Hall 2" value="${exam ? esc(exam.room || '') : ''}">
+        <input class="input" name="room" placeholder="e.g. Exam Hall 2" value="${exam ? esc(exam.room || "") : ""}">
       </div>
       <div class="form-group">
         <label>What to study (optional)</label>
-        <textarea class="textarea" name="syllabus" placeholder="Chapters, topics, or notes to revise">${exam ? esc(exam.syllabus || '') : ''}</textarea>
+        <textarea class="textarea" name="syllabus" placeholder="Chapters, topics, or notes to revise">${exam ? esc(exam.syllabus || "") : ""}</textarea>
       </div>
-      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? 'space-between' : 'flex-end'}; width:100%;">
-        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="examDeleteBtn">Delete</button>` : ''}
-        <button type="submit" class="premium-btn primary-btn">${isEdit ? 'Save changes' : 'Add exam'}</button>
+      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? "space-between" : "flex-end"}; width:100%;">
+        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="examDeleteBtn">Delete</button>` : ""}
+        <button type="submit" class="premium-btn primary-btn">${isEdit ? "Save changes" : "Add exam"}</button>
       </div>
     </form>
-  `);
-  document.getElementById('examForm').addEventListener('submit', (e) => { e.preventDefault(); saveExamFromForm(e.target, id); });
+  `,
+  );
+  document.getElementById("examForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    saveExamFromForm(e.target, id);
+  });
   if (isEdit) {
-      document.getElementById('examDeleteBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          handleDeleteExam(id);
-      });
+    document.getElementById("examDeleteBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      handleDeleteExam(id);
+    });
   }
 }
 
 function saveExamFromForm(form, id) {
   const fd = new FormData(form);
-  const startTime = fd.get('startTime');
-  const endTime = fd.get('endTime');
-  if (startTime && endTime && timeToMinutes(endTime) <= timeToMinutes(startTime)) {
-    showToast('End time must be after the start time', 'error');
+  const startTime = fd.get("startTime");
+  const endTime = fd.get("endTime");
+  if (
+    startTime &&
+    endTime &&
+    timeToMinutes(endTime) <= timeToMinutes(startTime)
+  ) {
+    showToast("End time must be after the start time", "error");
     return;
   }
   const data = {
-    subject: fd.get('subject').trim(),
-    examType: fd.get('examType'),
-    date: fd.get('date'),
-    startTime, endTime,
-    room: fd.get('room').trim(),
-    syllabus: fd.get('syllabus').trim(),
+    subject: fd.get("subject").trim(),
+    examType: fd.get("examType"),
+    date: fd.get("date"),
+    startTime,
+    endTime,
+    room: fd.get("room").trim(),
+    syllabus: fd.get("syllabus").trim(),
   };
   if (id) {
     const idx = state.exams.findIndex((e) => String(e.id) === String(id));
@@ -903,16 +1182,16 @@ function saveExamFromForm(form, id) {
   }
   renderExams();
   closeModal();
-  showToast(id ? 'Exam updated' : 'Exam added');
-  DB.set('exams-list', state.exams);
+  showToast(id ? "Exam updated" : "Exam added");
+  DB.set("exams-list", state.exams);
 }
 
 function handleDeleteExam(id) {
   confirmDialog("Delete this exam? This can't be undone.", () => {
     state.exams = state.exams.filter((e) => String(e.id) !== String(id));
     renderExams();
-    showToast('Exam deleted');
-    DB.set('exams-list', state.exams);
+    showToast("Exam deleted");
+    DB.set("exams-list", state.exams);
   });
 }
 
@@ -923,26 +1202,31 @@ RENDER_FNS.exams = renderExams;
    ========================================================================= */
 
 function computeSubjectAttendance(subjectId) {
-  const records = state.attendance.records.filter((r) => String(r.subjectId) === String(subjectId));
-  let present = 0, total = 0;
+  const records = state.attendance.records.filter(
+    (r) => String(r.subjectId) === String(subjectId),
+  );
+  let present = 0,
+    total = 0;
   records.forEach((r) => {
-    if (r.status === 'excused') return;
+    if (r.status === "excused") return;
     total++;
-    if (r.status === 'present' || r.status === 'late') present++;
+    if (r.status === "present" || r.status === "late") present++;
   });
   const pct = total ? Math.round((present / total) * 1000) / 10 : null;
   return { present, total, pct, records };
 }
 
 function attendanceStatusClass(pct) {
-  if (pct == null) return '';
-  if (pct >= state.settings.attendanceThreshold) return 'safe';
-  if (pct >= state.settings.attendanceThreshold - 10) return 'warn';
-  return 'danger';
+  if (pct == null) return "";
+  if (pct >= state.settings.attendanceThreshold) return "safe";
+  if (pct >= state.settings.attendanceThreshold - 10) return "warn";
+  return "danger";
 }
 
 function findOrCreateAttendanceSubject(name) {
-  let subj = state.attendance.subjects.find((s) => s.name.toLowerCase() === name.toLowerCase());
+  let subj = state.attendance.subjects.find(
+    (s) => s.name.toLowerCase() === name.toLowerCase(),
+  );
   if (!subj) {
     subj = { id: uid(), name };
     state.attendance.subjects.push(subj);
@@ -956,101 +1240,157 @@ function renderAttendance() {
 }
 
 function renderQuickMark() {
-  const panel = document.getElementById('quickMarkPanel');
+  const panel = document.getElementById("quickMarkPanel");
   const today = WEEKDAYS[new Date().getDay()];
   const todaysClasses = state.routine.filter((r) => r.day === today);
-  if (!todaysClasses.length) { panel.classList.add('hidden'); return; }
-  panel.classList.remove('hidden');
+  if (!todaysClasses.length) {
+    panel.classList.add("hidden");
+    return;
+  }
+  panel.classList.remove("hidden");
   const todayDate = todayISO();
-  const list = document.getElementById('quickMarkList');
-  list.innerHTML = todaysClasses.map((cls) => {
-    const subj = state.attendance.subjects.find((s) => s.name.toLowerCase() === cls.subject.toLowerCase());
-    const existingRecord = subj ? state.attendance.records.find((r) => String(r.subjectId) === String(subj.id) && r.date === todayDate) : null;
-    const currentStatus = existingRecord ? existingRecord.status : null;
-    return `
+  const list = document.getElementById("quickMarkList");
+  list.innerHTML = todaysClasses
+    .map((cls) => {
+      const subj = state.attendance.subjects.find(
+        (s) => s.name.toLowerCase() === cls.subject.toLowerCase(),
+      );
+      const existingRecord = subj
+        ? state.attendance.records.find(
+            (r) =>
+              String(r.subjectId) === String(subj.id) && r.date === todayDate,
+          )
+        : null;
+      const currentStatus = existingRecord ? existingRecord.status : null;
+      return `
     <div class="quick-mark-row">
       <div class="qm-info">
         <div class="qm-title">${esc(cls.subject)}</div>
         <div class="qm-time">${formatTime12(cls.startTime)}–${formatTime12(cls.endTime)}</div>
       </div>
       <div class="qm-actions">
-        <button class="qm-btn present-style ${currentStatus === 'present' ? 'active' : ''}" data-subject="${esc(cls.subject)}" data-status="present" aria-label="Present">${icon('check', 'icon-sm')}</button>
-        <button class="qm-btn late-style ${currentStatus === 'late' ? 'active' : ''}" data-subject="${esc(cls.subject)}" data-status="late" aria-label="Late">${icon('clock', 'icon-sm')}</button>
-        <button class="qm-btn absent-style ${currentStatus === 'absent' ? 'active' : ''}" data-subject="${esc(cls.subject)}" data-status="absent" aria-label="Absent">${icon('x', 'icon-sm')}</button>
+        <button class="qm-btn present-style ${currentStatus === "present" ? "active" : ""}" data-subject="${esc(cls.subject)}" data-status="present" aria-label="Present">${icon("check", "icon-sm")}</button>
+        <button class="qm-btn late-style ${currentStatus === "late" ? "active" : ""}" data-subject="${esc(cls.subject)}" data-status="late" aria-label="Late">${icon("clock", "icon-sm")}</button>
+        <button class="qm-btn absent-style ${currentStatus === "absent" ? "active" : ""}" data-subject="${esc(cls.subject)}" data-status="absent" aria-label="Absent">${icon("x", "icon-sm")}</button>
       </div>
     </div>`;
-  }).join('');
-  list.querySelectorAll('.qm-btn').forEach((btn) => {
-    btn.addEventListener('click', () => quickMarkAttendance(btn.dataset.subject, btn.dataset.status));
+    })
+    .join("");
+  list.querySelectorAll(".qm-btn").forEach((btn) => {
+    btn.addEventListener("click", () =>
+      quickMarkAttendance(btn.dataset.subject, btn.dataset.status),
+    );
   });
 }
 
 function quickMarkAttendance(subjectName, status) {
   const subj = findOrCreateAttendanceSubject(subjectName);
   const todayDate = todayISO();
-  const record = state.attendance.records.find((r) => String(r.subjectId) === String(subj.id) && r.date === todayDate);
+  const record = state.attendance.records.find(
+    (r) => String(r.subjectId) === String(subj.id) && r.date === todayDate,
+  );
   if (record) {
     if (record.status === status) {
-      state.attendance.records = state.attendance.records.filter((r) => r !== record);
+      state.attendance.records = state.attendance.records.filter(
+        (r) => r !== record,
+      );
     } else {
       record.status = status;
     }
   } else {
-    state.attendance.records.push({ id: uid(), subjectId: subj.id, date: todayDate, status });
+    state.attendance.records.push({
+      id: uid(),
+      subjectId: subj.id,
+      date: todayDate,
+      status,
+    });
   }
   renderAttendance();
-  showToast('Attendance updated');
-  DB.set('attendance-data', state.attendance);
+  showToast("Attendance updated");
+  DB.set("attendance-data", state.attendance);
 }
 
 function renderAttendanceSubjects() {
-  const grid = document.getElementById('attendanceSubjectsGrid');
+  const grid = document.getElementById("attendanceSubjectsGrid");
   if (!state.attendance.subjects.length) {
-    grid.innerHTML = emptyStateHtml('checkcircle', 'No subjects yet', "Add a subject to start logging attendance — or use quick-mark above once your routine has classes.", `<button class="premium-btn primary-btn" onclick="openAttendanceSubjectForm()">${icon('plus')}<span>Add subject</span></button>`);
+    grid.innerHTML = emptyStateHtml(
+      "checkcircle",
+      "No subjects yet",
+      "Add a subject to start logging attendance — or use quick-mark above once your routine has classes.",
+      `<button class="premium-btn primary-btn" onclick="openAttendanceSubjectForm()">${icon("plus")}<span>Add subject</span></button>`,
+    );
     return;
   }
-  grid.innerHTML = state.attendance.subjects.map((s) => {
-    const { present, total, pct } = computeSubjectAttendance(s.id);
-    const cls = attendanceStatusClass(pct);
-    return `
+  grid.innerHTML = state.attendance.subjects
+    .map((s) => {
+      const { present, total, pct } = computeSubjectAttendance(s.id);
+      const cls = attendanceStatusClass(pct);
+      return `
     <div class="subject-card">
       <div class="subject-card-top">
         <div class="subject-tag"><span class="subject-dot" style="background:${subjectColorVar(s.name)}"></span>${esc(s.name)}</div>
         <div class="ledger-row-actions">
-          <button class="icon-btn" data-log="${s.id}" aria-label="Log attendance">${icon('plus', 'icon-sm')}</button>
-          <button class="icon-btn" data-del="${s.id}" aria-label="Delete subject">${icon('trash', 'icon-sm')}</button>
+          <button class="icon-btn" data-log="${s.id}" aria-label="Log attendance">${icon("plus", "icon-sm")}</button>
+          <button class="icon-btn" data-del="${s.id}" aria-label="Delete subject">${icon("trash", "icon-sm")}</button>
         </div>
       </div>
-      <div class="subject-card-pct ${cls}">${pct != null ? pct + '%' : '—'}</div>
-      <div class="subject-card-sub">${total ? `${present} of ${total} classes attended` : 'No records yet'}</div>
-      ${pct != null && pct < state.settings.attendanceThreshold ? `<div class="badge badge-danger" style="margin-top:8px;">${icon('alerttriangle', 'icon-sm')}Below ${state.settings.attendanceThreshold}% target</div>` : ''}
+      <div class="subject-card-pct ${cls}">${pct != null ? pct + "%" : "—"}</div>
+      <div class="subject-card-sub">${total ? `${present} of ${total} classes attended` : "No records yet"}</div>
+      ${pct != null && pct < state.settings.attendanceThreshold ? `<div class="badge badge-danger" style="margin-top:8px;">${icon("alerttriangle", "icon-sm")}Below ${state.settings.attendanceThreshold}% target</div>` : ""}
       <button class="link-btn" data-history="${s.id}" style="margin-top:10px;">View history</button>
       <div class="attendance-history hidden" id="history-${s.id}"></div>
     </div>`;
-  }).join('');
+    })
+    .join("");
 
-  grid.querySelectorAll('[data-log]').forEach((b) => b.addEventListener('click', () => openAttendanceLogForm(b.dataset.log)));
-  grid.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => handleDeleteAttendanceSubject(b.dataset.del)));
-  grid.querySelectorAll('[data-history]').forEach((b) => b.addEventListener('click', () => toggleHistory(b.dataset.history)));
+  grid
+    .querySelectorAll("[data-log]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openAttendanceLogForm(b.dataset.log)),
+    );
+  grid
+    .querySelectorAll("[data-del]")
+    .forEach((b) =>
+      b.addEventListener("click", () =>
+        handleDeleteAttendanceSubject(b.dataset.del),
+      ),
+    );
+  grid
+    .querySelectorAll("[data-history]")
+    .forEach((b) =>
+      b.addEventListener("click", () => toggleHistory(b.dataset.history)),
+    );
 }
 
 function toggleHistory(subjectId) {
   const el = document.getElementById(`history-${subjectId}`);
-  if (el.classList.contains('hidden')) {
+  if (el.classList.contains("hidden")) {
     const { records } = computeSubjectAttendance(subjectId);
     const sorted = [...records].sort((a, b) => b.date.localeCompare(a.date));
-    const statusColor = { present: 'var(--pine)', late: 'var(--brass)', absent: 'var(--clay)', excused: 'var(--text-tertiary)' };
+    const statusColor = {
+      present: "var(--pine)",
+      late: "var(--brass)",
+      absent: "var(--clay)",
+      excused: "var(--text-tertiary)",
+    };
     el.innerHTML = sorted.length
-      ? sorted.map((r) => `<div class="history-row"><span>${formatDateMed(r.date)}</span><span class="hr-status" style="color:${statusColor[r.status] || 'var(--text-tertiary)'}">${esc(r.status)}</span></div>`).join('')
+      ? sorted
+          .map(
+            (r) =>
+              `<div class="history-row"><span>${formatDateMed(r.date)}</span><span class="hr-status" style="color:${statusColor[r.status] || "var(--text-tertiary)"}">${esc(r.status)}</span></div>`,
+          )
+          .join("")
       : '<p style="font-size:12.5px;">No records logged yet.</p>';
-    el.classList.remove('hidden');
+    el.classList.remove("hidden");
   } else {
-    el.classList.add('hidden');
+    el.classList.add("hidden");
   }
 }
 
 function openAttendanceSubjectForm() {
-  openModal('Add subject', `
+  openModal(
+    "Add subject",
+    `
     <form id="attSubjectForm">
       <div class="form-group">
         <label>Subject name</label>
@@ -1060,37 +1400,53 @@ function openAttendanceSubjectForm() {
         <button type="submit" class="premium-btn primary-btn">Add subject</button>
       </div>
     </form>
-  `);
-  document.getElementById('attSubjectForm').addEventListener('submit', (e) => {
+  `,
+  );
+  document.getElementById("attSubjectForm").addEventListener("submit", (e) => {
     e.preventDefault();
-    const name = new FormData(e.target).get('name').trim();
+    const name = new FormData(e.target).get("name").trim();
     if (!name) return;
-    if (state.attendance.subjects.some((s) => s.name.toLowerCase() === name.toLowerCase())) {
-      showToast('That subject is already being tracked', 'error');
+    if (
+      state.attendance.subjects.some(
+        (s) => s.name.toLowerCase() === name.toLowerCase(),
+      )
+    ) {
+      showToast("That subject is already being tracked", "error");
       return;
     }
     state.attendance.subjects.push({ id: uid(), name });
     closeModal();
     renderAttendance();
-    showToast('Subject added');
-    DB.set('attendance-data', state.attendance);
+    showToast("Subject added");
+    DB.set("attendance-data", state.attendance);
   });
 }
 
 function handleDeleteAttendanceSubject(id) {
-  confirmDialog("Delete this subject and all of its attendance history? This can't be undone.", () => {
-    state.attendance.subjects = state.attendance.subjects.filter((s) => String(s.id) !== String(id));
-    state.attendance.records = state.attendance.records.filter((r) => String(r.subjectId) !== String(id));
-    renderAttendance();
-    showToast('Subject deleted');
-    DB.set('attendance-data', state.attendance);
-  });
+  confirmDialog(
+    "Delete this subject and all of its attendance history? This can't be undone.",
+    () => {
+      state.attendance.subjects = state.attendance.subjects.filter(
+        (s) => String(s.id) !== String(id),
+      );
+      state.attendance.records = state.attendance.records.filter(
+        (r) => String(r.subjectId) !== String(id),
+      );
+      renderAttendance();
+      showToast("Subject deleted");
+      DB.set("attendance-data", state.attendance);
+    },
+  );
 }
 
 function openAttendanceLogForm(subjectId) {
-  const subj = state.attendance.subjects.find((s) => String(s.id) === String(subjectId));
+  const subj = state.attendance.subjects.find(
+    (s) => String(s.id) === String(subjectId),
+  );
   if (!subj) return;
-  openModal(`Log attendance for ${subj.name}`, `
+  openModal(
+    `Log attendance for ${subj.name}`,
+    `
     <form id="attLogForm">
       <div class="form-group">
         <label>Date</label>
@@ -1109,24 +1465,33 @@ function openAttendanceLogForm(subjectId) {
         <button type="submit" class="premium-btn primary-btn">Save record</button>
       </div>
     </form>
-  `);
+  `,
+  );
   document.querySelectorAll('#attLogForm input[name="status"]').forEach((r) => {
-    r.addEventListener('change', () => {
-      document.querySelectorAll('#attLogForm .mark-btn').forEach((l) => l.classList.remove('selected'));
-      r.closest('.mark-btn').classList.add('selected');
+    r.addEventListener("change", () => {
+      document
+        .querySelectorAll("#attLogForm .mark-btn")
+        .forEach((l) => l.classList.remove("selected"));
+      r.closest(".mark-btn").classList.add("selected");
     });
   });
-  document.getElementById('attLogForm').addEventListener('submit', (e) => {
+  document.getElementById("attLogForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    const date = fd.get('date');
-    const status = fd.get('status');
-    const record = state.attendance.records.find((r) => String(r.subjectId) === String(subjectId) && r.date === date);
-    if (record) { record.status = status; } else { state.attendance.records.push({ id: uid(), subjectId, date, status }); }
+    const date = fd.get("date");
+    const status = fd.get("status");
+    const record = state.attendance.records.find(
+      (r) => String(r.subjectId) === String(subjectId) && r.date === date,
+    );
+    if (record) {
+      record.status = status;
+    } else {
+      state.attendance.records.push({ id: uid(), subjectId, date, status });
+    }
     closeModal();
     renderAttendance();
-    showToast('Attendance recorded');
-    DB.set('attendance-data', state.attendance);
+    showToast("Attendance recorded");
+    DB.set("attendance-data", state.attendance);
   });
 }
 
@@ -1137,23 +1502,35 @@ RENDER_FNS.attendance = renderAttendance;
    ========================================================================= */
 
 function computeSemesterSGPA(sem) {
-  let totalPoints = 0, totalCredits = 0;
+  let totalPoints = 0,
+    totalCredits = 0;
   sem.courses.forEach((c) => {
     const g = state.cgpa.gradeScale.find((gr) => gr.grade === c.grade);
-    if (g && c.credit) { totalPoints += g.point * Number(c.credit); totalCredits += Number(c.credit); }
+    if (g && c.credit) {
+      totalPoints += g.point * Number(c.credit);
+      totalCredits += Number(c.credit);
+    }
   });
-  return totalCredits ? Math.round((totalPoints / totalCredits) * 100) / 100 : null;
+  return totalCredits
+    ? Math.round((totalPoints / totalCredits) * 100) / 100
+    : null;
 }
 
 function computeOverallCGPA() {
-  let totalPoints = 0, totalCredits = 0;
+  let totalPoints = 0,
+    totalCredits = 0;
   state.cgpa.semesters.forEach((sem) => {
     sem.courses.forEach((c) => {
       const g = state.cgpa.gradeScale.find((gr) => gr.grade === c.grade);
-      if (g && c.credit) { totalPoints += g.point * Number(c.credit); totalCredits += Number(c.credit); }
+      if (g && c.credit) {
+        totalPoints += g.point * Number(c.credit);
+        totalCredits += Number(c.credit);
+      }
     });
   });
-  return totalCredits ? Math.round((totalPoints / totalCredits) * 100) / 100 : null;
+  return totalCredits
+    ? Math.round((totalPoints / totalCredits) * 100) / 100
+    : null;
 }
 
 function renderCGPA() {
@@ -1164,11 +1541,18 @@ function renderCGPA() {
 
 function renderCGPASummary() {
   const cgpa = computeOverallCGPA();
-  const totalCredits = state.cgpa.semesters.reduce((sum, sem) => sum + sem.courses.reduce((s, c) => s + Number(c.credit || 0), 0), 0);
-  const totalCourses = state.cgpa.semesters.reduce((sum, sem) => sum + sem.courses.length, 0);
-  document.getElementById('cgpaSummary').innerHTML = `
+  const totalCredits = state.cgpa.semesters.reduce(
+    (sum, sem) =>
+      sum + sem.courses.reduce((s, c) => s + Number(c.credit || 0), 0),
+    0,
+  );
+  const totalCourses = state.cgpa.semesters.reduce(
+    (sum, sem) => sum + sem.courses.length,
+    0,
+  );
+  document.getElementById("cgpaSummary").innerHTML = `
     <div class="cgpa-seal">
-      <div class="num">${cgpa != null ? cgpa.toFixed(2) : '—'}</div>
+      <div class="num">${cgpa != null ? cgpa.toFixed(2) : "—"}</div>
       <div class="lbl">CGPA</div>
     </div>
     <div class="cgpa-summary-stats">
@@ -1189,26 +1573,35 @@ function renderCGPASummary() {
 }
 
 function renderCGPAChart() {
-  const wrap = document.getElementById('cgpaChartWrap');
-  const semsWithData = state.cgpa.semesters.filter((s) => computeSemesterSGPA(s) != null);
-  if (semsWithData.length < 2) { wrap.classList.add('hidden'); return; }
-  wrap.classList.remove('hidden');
+  const wrap = document.getElementById("cgpaChartWrap");
+  const semsWithData = state.cgpa.semesters.filter(
+    (s) => computeSemesterSGPA(s) != null,
+  );
+  if (semsWithData.length < 2) {
+    wrap.classList.add("hidden");
+    return;
+  }
+  wrap.classList.remove("hidden");
   const maxScale = Math.max(...state.cgpa.gradeScale.map((g) => g.point), 4);
-  const w = 640, h = 190, padL = 10, padB = 28, padT = 20;
+  const w = 640,
+    h = 190,
+    padL = 10,
+    padB = 28,
+    padT = 20;
   const barSlot = (w - padL - 16) / semsWithData.length;
-  let bars = '';
+  let bars = "";
   semsWithData.forEach((sem, i) => {
     const val = computeSemesterSGPA(sem);
     const barH = (val / maxScale) * (h - padB - padT);
     const bw = Math.min(barSlot * 0.55, 46);
     const x = padL + i * barSlot + (barSlot - bw) / 2;
     const y = h - padB - barH;
-    const label = sem.name.length > 12 ? sem.name.slice(0, 11) + '…' : sem.name;
+    const label = sem.name.length > 12 ? sem.name.slice(0, 11) + "…" : sem.name;
     bars += `<rect x="${x}" y="${y}" width="${bw}" height="${Math.max(barH, 2)}" rx="5" fill="var(--pine)"></rect>`;
     bars += `<text x="${x + bw / 2}" y="${y - 8}" text-anchor="middle" font-size="12" fill="var(--text-primary)" font-family="Outfit, sans-serif">${val.toFixed(2)}</text>`;
     bars += `<text x="${x + bw / 2}" y="${h - 10}" text-anchor="middle" font-size="10.5" fill="var(--text-tertiary)" font-family="Outfit, sans-serif">${esc(label)}</text>`;
   });
-  document.getElementById('cgpaChart').innerHTML = `
+  document.getElementById("cgpaChart").innerHTML = `
     <svg viewBox="0 0 ${w} ${h}" style="width:100%; height:auto; max-height:210px; display:block;">
       <line x1="${padL}" y1="${h - padB}" x2="${w - 8}" y2="${h - padB}" stroke="var(--rule-strong)" stroke-width="1"/>
       ${bars}
@@ -1216,152 +1609,213 @@ function renderCGPAChart() {
 }
 
 function renderSemesters() {
-  const container = document.getElementById('semestersContainer');
+  const container = document.getElementById("semestersContainer");
   if (!state.cgpa.semesters.length) {
-    container.innerHTML = emptyStateHtml('barchart', 'No semesters yet', 'Add a semester, then log your courses and grades to calculate your CGPA.', `<button class="premium-btn primary-btn" onclick="openSemesterForm()">${icon('plus')}<span>Add semester</span></button>`);
+    container.innerHTML = emptyStateHtml(
+      "barchart",
+      "No semesters yet",
+      "Add a semester, then log your courses and grades to calculate your CGPA.",
+      `<button class="premium-btn primary-btn" onclick="openSemesterForm()">${icon("plus")}<span>Add semester</span></button>`,
+    );
     return;
   }
-  container.innerHTML = state.cgpa.semesters.map((sem) => {
-    const sgpa = computeSemesterSGPA(sem);
-    return `
+  container.innerHTML = state.cgpa.semesters
+    .map((sem) => {
+      const sgpa = computeSemesterSGPA(sem);
+      return `
     <div class="semester-block">
       <div class="semester-head">
         <div class="semester-head-left">
           <h3>${esc(sem.name)}</h3>
-          <span class="semester-sgpa">SGPA <b>${sgpa != null ? sgpa.toFixed(2) : '—'}</b></span>
+          <span class="semester-sgpa">SGPA <b>${sgpa != null ? sgpa.toFixed(2) : "—"}</b></span>
         </div>
         <div class="toolbar-btns">
-          <button class="premium-btn outline-btn" data-addcourse="${sem.id}">${icon('plus', 'icon-sm')}<span>Add course</span></button>
-          <button class="icon-btn" data-editsem="${sem.id}" aria-label="Rename semester">${icon('edit', 'icon-sm')}</button>
-          <button class="icon-btn" data-delsem="${sem.id}" aria-label="Delete semester">${icon('trash', 'icon-sm')}</button>
+          <button class="premium-btn outline-btn" data-addcourse="${sem.id}">${icon("plus", "icon-sm")}<span>Add course</span></button>
+          <button class="icon-btn" data-editsem="${sem.id}" aria-label="Rename semester">${icon("edit", "icon-sm")}</button>
+          <button class="icon-btn" data-delsem="${sem.id}" aria-label="Delete semester">${icon("trash", "icon-sm")}</button>
         </div>
       </div>
-      ${sem.courses.length ? `
+      ${
+        sem.courses.length
+          ? `
       <div class="scroll-x">
       <table class="course-table">
         <thead><tr><th>Course</th><th>Credits</th><th>Grade</th><th>Points</th><th></th></tr></thead>
         <tbody>
-          ${sem.courses.map((c) => {
-            const g = state.cgpa.gradeScale.find((gr) => gr.grade === c.grade);
-            return `<tr>
+          ${sem.courses
+            .map((c) => {
+              const g = state.cgpa.gradeScale.find(
+                (gr) => gr.grade === c.grade,
+              );
+              return `<tr>
               <td>${esc(c.name)}</td>
               <td class="num-cell">${c.credit}</td>
               <td>${esc(c.grade)}</td>
-              <td class="num-cell">${g ? (g.point * c.credit).toFixed(2) : '—'}</td>
+              <td class="num-cell">${g ? (g.point * c.credit).toFixed(2) : "—"}</td>
               <td>
                 <div class="ledger-row-actions">
-                  <button class="icon-btn" data-editcourse="${sem.id}:${c.id}" aria-label="Edit course">${icon('edit', 'icon-sm')}</button>
-                  <button class="icon-btn" data-delcourse="${sem.id}:${c.id}" aria-label="Delete course">${icon('trash', 'icon-sm')}</button>
+                  <button class="icon-btn" data-editcourse="${sem.id}:${c.id}" aria-label="Edit course">${icon("edit", "icon-sm")}</button>
+                  <button class="icon-btn" data-delcourse="${sem.id}:${c.id}" aria-label="Delete course">${icon("trash", "icon-sm")}</button>
                 </div>
               </td>
             </tr>`;
-          }).join('')}
+            })
+            .join("")}
         </tbody>
       </table>
-      </div>` : `<div class="empty-state" style="padding: 24px;"><p>No courses added to this semester yet.</p></div>`}
+      </div>`
+          : `<div class="empty-state" style="padding: 24px;"><p>No courses added to this semester yet.</p></div>`
+      }
     </div>`;
-  }).join('');
+    })
+    .join("");
 
-  container.querySelectorAll('[data-addcourse]').forEach((b) => b.addEventListener('click', () => openCourseForm(b.dataset.addcourse)));
-  container.querySelectorAll('[data-editsem]').forEach((b) => b.addEventListener('click', () => openSemesterForm(b.dataset.editsem)));
-  container.querySelectorAll('[data-delsem]').forEach((b) => b.addEventListener('click', () => handleDeleteSemester(b.dataset.delsem)));
-  container.querySelectorAll('[data-editcourse]').forEach((b) => {
-    const [semId, courseId] = b.dataset.editcourse.split(':');
-    b.addEventListener('click', () => openCourseForm(semId, courseId));
+  container
+    .querySelectorAll("[data-addcourse]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openCourseForm(b.dataset.addcourse)),
+    );
+  container
+    .querySelectorAll("[data-editsem]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openSemesterForm(b.dataset.editsem)),
+    );
+  container
+    .querySelectorAll("[data-delsem]")
+    .forEach((b) =>
+      b.addEventListener("click", () => handleDeleteSemester(b.dataset.delsem)),
+    );
+  container.querySelectorAll("[data-editcourse]").forEach((b) => {
+    const [semId, courseId] = b.dataset.editcourse.split(":");
+    b.addEventListener("click", () => openCourseForm(semId, courseId));
   });
-  container.querySelectorAll('[data-delcourse]').forEach((b) => {
-    const [semId, courseId] = b.dataset.delcourse.split(':');
-    b.addEventListener('click', () => handleDeleteCourse(semId, courseId));
+  container.querySelectorAll("[data-delcourse]").forEach((b) => {
+    const [semId, courseId] = b.dataset.delcourse.split(":");
+    b.addEventListener("click", () => handleDeleteCourse(semId, courseId));
   });
 }
 
 function openSemesterForm(id) {
-  const sem = id ? state.cgpa.semesters.find((s) => String(s.id) === String(id)) : null;
-  openModal(sem ? 'Rename semester' : 'Add semester', `
+  const sem = id
+    ? state.cgpa.semesters.find((s) => String(s.id) === String(id))
+    : null;
+  openModal(
+    sem ? "Rename semester" : "Add semester",
+    `
     <form id="semesterForm">
       <div class="form-group">
         <label>Semester name</label>
-        <input class="input" name="name" required placeholder="e.g. 1st Year 2nd Semester" value="${sem ? esc(sem.name) : ''}">
+        <input class="input" name="name" required placeholder="e.g. 1st Year 2nd Semester" value="${sem ? esc(sem.name) : ""}">
       </div>
       <div class="modal-actions" style="display:flex; justify-content: flex-end; width:100%;">
-        <button type="submit" class="premium-btn primary-btn">${sem ? 'Save changes' : 'Add semester'}</button>
+        <button type="submit" class="premium-btn primary-btn">${sem ? "Save changes" : "Add semester"}</button>
       </div>
     </form>
-  `);
-  document.getElementById('semesterForm').addEventListener('submit', (e) => {
+  `,
+  );
+  document.getElementById("semesterForm").addEventListener("submit", (e) => {
     e.preventDefault();
-    const name = new FormData(e.target).get('name').trim();
+    const name = new FormData(e.target).get("name").trim();
     if (!name) return;
-    if (sem) { sem.name = name; } else { state.cgpa.semesters.push({ id: uid(), name, courses: [] }); }
+    if (sem) {
+      sem.name = name;
+    } else {
+      state.cgpa.semesters.push({ id: uid(), name, courses: [] });
+    }
     closeModal();
     renderCGPA();
-    showToast(sem ? 'Semester updated' : 'Semester added');
-    DB.set('cgpa-data', state.cgpa);
+    showToast(sem ? "Semester updated" : "Semester added");
+    DB.set("cgpa-data", state.cgpa);
   });
 }
 
 function handleDeleteSemester(id) {
-  confirmDialog("Delete this semester and all of its courses? This can't be undone.", () => {
-    state.cgpa.semesters = state.cgpa.semesters.filter((s) => String(s.id) !== String(id));
-    renderCGPA();
-    showToast('Semester deleted');
-    DB.set('cgpa-data', state.cgpa);
-  });
+  confirmDialog(
+    "Delete this semester and all of its courses? This can't be undone.",
+    () => {
+      state.cgpa.semesters = state.cgpa.semesters.filter(
+        (s) => String(s.id) !== String(id),
+      );
+      renderCGPA();
+      showToast("Semester deleted");
+      DB.set("cgpa-data", state.cgpa);
+    },
+  );
 }
 
 function openCourseForm(semId, courseId) {
   const sem = state.cgpa.semesters.find((s) => String(s.id) === String(semId));
   if (!sem) return;
-  const course = courseId ? sem.courses.find((c) => String(c.id) === String(courseId)) : null;
-  openModal(course ? 'Edit course' : 'Add course', `
+  const course = courseId
+    ? sem.courses.find((c) => String(c.id) === String(courseId))
+    : null;
+  openModal(
+    course ? "Edit course" : "Add course",
+    `
     <form id="courseForm">
       <div class="form-group">
         <label>Course name</label>
-        <input class="input" name="name" required placeholder="e.g. Data Structures" value="${course ? esc(course.name) : ''}">
+        <input class="input" name="name" required placeholder="e.g. Data Structures" value="${course ? esc(course.name) : ""}">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Credit hours</label>
-          <input class="input" type="number" name="credit" step="0.5" min="0.5" max="10" required value="${course ? course.credit : '3'}">
+          <input class="input" type="number" name="credit" step="0.5" min="0.5" max="10" required value="${course ? course.credit : "3"}">
         </div>
         <div class="form-group">
           <label>Grade</label>
           <select class="select" name="grade">
-            ${state.cgpa.gradeScale.map((g) => `<option value="${esc(g.grade)}" ${course && course.grade === g.grade ? 'selected' : ''}>${esc(g.grade)} (${g.point.toFixed(2)})</option>`).join('')}
+            ${state.cgpa.gradeScale.map((g) => `<option value="${esc(g.grade)}" ${course && course.grade === g.grade ? "selected" : ""}>${esc(g.grade)} (${g.point.toFixed(2)})</option>`).join("")}
           </select>
         </div>
       </div>
-      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${course ? 'space-between' : 'flex-end'}; width:100%;">
-        ${course ? `<button type="button" class="premium-btn danger-btn" id="courseDeleteBtn">Delete</button>` : ''}
-        <button type="submit" class="premium-btn primary-btn">${course ? 'Save changes' : 'Add course'}</button>
+      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${course ? "space-between" : "flex-end"}; width:100%;">
+        ${course ? `<button type="button" class="premium-btn danger-btn" id="courseDeleteBtn">Delete</button>` : ""}
+        <button type="submit" class="premium-btn primary-btn">${course ? "Save changes" : "Add course"}</button>
       </div>
     </form>
-  `);
-  document.getElementById('courseForm').addEventListener('submit', (e) => {
+  `,
+  );
+  document.getElementById("courseForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    const data = { name: fd.get('name').trim(), credit: Number(fd.get('credit')), grade: fd.get('grade') };
-    if (course) { Object.assign(course, data); } else { sem.courses.push({ id: uid(), ...data }); }
+    const data = {
+      name: fd.get("name").trim(),
+      credit: Number(fd.get("credit")),
+      grade: fd.get("grade"),
+    };
+    if (course) {
+      Object.assign(course, data);
+    } else {
+      sem.courses.push({ id: uid(), ...data });
+    }
     closeModal();
     renderCGPA();
-    showToast(course ? 'Course updated' : 'Course added');
-    DB.set('cgpa-data', state.cgpa);
+    showToast(course ? "Course updated" : "Course added");
+    DB.set("cgpa-data", state.cgpa);
   });
   if (course) {
-      document.getElementById('courseDeleteBtn').addEventListener('click', (e) => { 
-          e.preventDefault();
-          handleDeleteCourse(semId, courseId); 
+    document
+      .getElementById("courseDeleteBtn")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        handleDeleteCourse(semId, courseId);
       });
   }
 }
 
 function handleDeleteCourse(semId, courseId) {
-  confirmDialog('Delete this course from the semester?', () => {
-    const sem = state.cgpa.semesters.find((s) => String(s.id) === String(semId));
-    if (sem) sem.courses = sem.courses.filter((c) => String(c.id) !== String(courseId));
+  confirmDialog("Delete this course from the semester?", () => {
+    const sem = state.cgpa.semesters.find(
+      (s) => String(s.id) === String(semId),
+    );
+    if (sem)
+      sem.courses = sem.courses.filter(
+        (c) => String(c.id) !== String(courseId),
+      );
     renderCGPA();
-    showToast('Course deleted');
-    DB.set('cgpa-data', state.cgpa);
+    showToast("Course deleted");
+    DB.set("cgpa-data", state.cgpa);
   });
 }
 
@@ -1370,45 +1824,57 @@ function openGradeScaleModal() {
 }
 
 function renderGradeScaleModalBody() {
-  const rowsHtml = state.cgpa.gradeScale.map((g, i) => `
+  const rowsHtml = state.cgpa.gradeScale
+    .map(
+      (g, i) => `
     <div class="grade-scale-row">
       <input class="input" data-gs-grade="${i}" value="${esc(g.grade)}" placeholder="Grade label">
       <input class="input" type="number" step="0.01" min="0" max="10" data-gs-point="${i}" value="${g.point}" placeholder="Points">
-      <button type="button" class="icon-btn" data-gs-del="${i}" aria-label="Remove row">${icon('trash', 'icon-sm')}</button>
+      <button type="button" class="icon-btn" data-gs-del="${i}" aria-label="Remove row">${icon("trash", "icon-sm")}</button>
     </div>
-  `).join('');
-  openModal('Grade scale', `
+  `,
+    )
+    .join("");
+  openModal(
+    "Grade scale",
+    `
     <p style="font-size:12.5px; color:var(--text-tertiary); margin-bottom:14px;">Set the letter grades and grade points used across your CGPA calculations. Changing a value here updates every course using that grade.</p>
     <div id="gradeScaleRows">${rowsHtml}</div>
-    <button type="button" class="premium-btn outline-btn" id="gsAddRowBtn" style="margin-top:10px;">${icon('plus', 'icon-sm')}<span>Add row</span></button>
+    <button type="button" class="premium-btn outline-btn" id="gsAddRowBtn" style="margin-top:10px;">${icon("plus", "icon-sm")}<span>Add row</span></button>
     <div class="modal-actions" style="display:flex; justify-content: flex-end; width:100%;">
       <button type="button" class="premium-btn primary-btn" id="gsSaveBtn">Save grade scale</button>
     </div>
-  `);
+  `,
+  );
 
-  document.getElementById('gsAddRowBtn').addEventListener('click', () => {
-    state.cgpa.gradeScale.push({ grade: '', point: 0 });
+  document.getElementById("gsAddRowBtn").addEventListener("click", () => {
+    state.cgpa.gradeScale.push({ grade: "", point: 0 });
     renderGradeScaleModalBody();
   });
-  document.querySelectorAll('[data-gs-del]').forEach((b) => b.addEventListener('click', () => {
-    state.cgpa.gradeScale.splice(Number(b.dataset.gsDel), 1);
-    renderGradeScaleModalBody();
-  }));
-  document.getElementById('gsSaveBtn').addEventListener('click', () => {
-    const grades = document.querySelectorAll('[data-gs-grade]');
-    const points = document.querySelectorAll('[data-gs-point]');
+  document.querySelectorAll("[data-gs-del]").forEach((b) =>
+    b.addEventListener("click", () => {
+      state.cgpa.gradeScale.splice(Number(b.dataset.gsDel), 1);
+      renderGradeScaleModalBody();
+    }),
+  );
+  document.getElementById("gsSaveBtn").addEventListener("click", () => {
+    const grades = document.querySelectorAll("[data-gs-grade]");
+    const points = document.querySelectorAll("[data-gs-point]");
     const newScale = [];
     grades.forEach((input, i) => {
       const grade = input.value.trim();
       const point = parseFloat(points[i].value);
       if (grade && !isNaN(point)) newScale.push({ grade, point });
     });
-    if (!newScale.length) { showToast('Add at least one grade', 'error'); return; }
+    if (!newScale.length) {
+      showToast("Add at least one grade", "error");
+      return;
+    }
     state.cgpa.gradeScale = newScale;
     closeModal();
     renderCGPA();
-    showToast('Grade scale updated');
-    DB.set('cgpa-data', state.cgpa);
+    showToast("Grade scale updated");
+    DB.set("cgpa-data", state.cgpa);
   });
 }
 
@@ -1418,42 +1884,72 @@ RENDER_FNS.cgpa = renderCGPA;
    COURSE MATERIALS
    ========================================================================= */
 
-const materialsFilters = { search: '', subject: 'all' };
-const MATERIAL_TYPES = ['Note', 'Slide', 'Book', 'Video', 'Article', 'Other'];
-const MATERIAL_TYPE_ICONS = { Note: 'edit', Slide: 'monitor', Book: 'book', Video: 'video', Article: 'link', Other: 'folder' };
+const materialsFilters = { search: "", subject: "all" };
+const MATERIAL_TYPES = ["Note", "Slide", "Book", "Video", "Article", "Other"];
+const MATERIAL_TYPE_ICONS = {
+  Note: "edit",
+  Slide: "monitor",
+  Book: "book",
+  Video: "video",
+  Article: "link",
+  Other: "folder",
+};
 
 function getFilteredMaterials() {
   return state.materials.filter((m) => {
-    if (materialsFilters.subject !== 'all' && m.subject !== materialsFilters.subject) return false;
+    if (
+      materialsFilters.subject !== "all" &&
+      m.subject !== materialsFilters.subject
+    )
+      return false;
     if (materialsFilters.search) {
       const q = materialsFilters.search.toLowerCase();
-      if (!m.title.toLowerCase().includes(q) && !m.subject.toLowerCase().includes(q)) return false;
+      if (
+        !m.title.toLowerCase().includes(q) &&
+        !m.subject.toLowerCase().includes(q)
+      )
+        return false;
     }
     return true;
   });
 }
 
 function populateMaterialsSubjectFilter() {
-  const sel = document.getElementById('materialsSubjectFilter');
+  const sel = document.getElementById("materialsSubjectFilter");
   const current = sel.value;
-  const subjects = Array.from(new Set(state.materials.map((m) => m.subject))).sort((a, b) => a.localeCompare(b));
-  sel.innerHTML = '<option value="all">All subjects</option>' + subjects.map((s) => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  const subjects = Array.from(
+    new Set(state.materials.map((m) => m.subject)),
+  ).sort((a, b) => a.localeCompare(b));
+  sel.innerHTML =
+    '<option value="all">All subjects</option>' +
+    subjects
+      .map((s) => `<option value="${esc(s)}">${esc(s)}</option>`)
+      .join("");
   if (subjects.includes(current)) sel.value = current;
 }
 
 function renderMaterials() {
   populateMaterialsSubjectFilter();
-  const container = document.getElementById('materialsContainer');
+  const container = document.getElementById("materialsContainer");
   if (!state.materials.length) {
-    container.innerHTML = emptyStateHtml('book', 'No materials yet', 'Save links, notes, or references for your courses so they are easy to find later.', `<button class="premium-btn primary-btn" onclick="openMaterialForm()">${icon('plus')}<span>Add material</span></button>`);
+    container.innerHTML = emptyStateHtml(
+      "book",
+      "No materials yet",
+      "Save links, notes, or references for your courses so they are easy to find later.",
+      `<button class="premium-btn primary-btn" onclick="openMaterialForm()">${icon("plus")}<span>Add material</span></button>`,
+    );
     return;
   }
   const list = getFilteredMaterials();
   if (!list.length) {
-    container.innerHTML = emptyStateHtml('search', 'No matches', 'Try a different search term or subject filter.');
+    container.innerHTML = emptyStateHtml(
+      "search",
+      "No matches",
+      "Try a different search term or subject filter.",
+    );
     return;
   }
-  container.innerHTML = list.map(materialCardHtml).join('');
+  container.innerHTML = list.map(materialCardHtml).join("");
   attachMaterialHandlers(container);
 }
 
@@ -1461,112 +1957,149 @@ function materialCardHtml(m) {
   return `
   <div class="material-card" style="border-top-color:${subjectColorVar(m.subject)}">
     <div class="material-card-top">
-      <div class="material-type-icon">${icon(MATERIAL_TYPE_ICONS[m.type] || 'folder')}</div>
+      <div class="material-type-icon">${icon(MATERIAL_TYPE_ICONS[m.type] || "folder")}</div>
       <div class="ledger-row-actions">
-        <button class="icon-btn" data-edit="${m.id}" aria-label="Edit material">${icon('edit', 'icon-sm')}</button>
-        <button class="icon-btn" data-del="${m.id}" aria-label="Delete material">${icon('trash', 'icon-sm')}</button>
+        <button class="icon-btn" data-edit="${m.id}" aria-label="Edit material">${icon("edit", "icon-sm")}</button>
+        <button class="icon-btn" data-del="${m.id}" aria-label="Delete material">${icon("trash", "icon-sm")}</button>
       </div>
     </div>
     <h4>${esc(m.title)}</h4>
     <div class="subject-tag"><span class="subject-dot" style="background:${subjectColorVar(m.subject)}"></span>${esc(m.subject)}</div>
-    ${m.description ? `<p class="material-desc">${esc(m.description.length > 110 ? m.description.slice(0, 108) + '…' : m.description)}</p>` : ''}
+    ${m.description ? `<p class="material-desc">${esc(m.description.length > 110 ? m.description.slice(0, 108) + "…" : m.description)}</p>` : ""}
     <div class="material-card-foot">
       <span class="badge badge-neutral">${esc(m.type)}</span>
-      ${m.url
-        ? `<a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer" class="link-btn">${icon('externallink', 'icon-sm')}<span>Open</span></a>`
-        : (m.type === 'Note' && m.description ? `<button class="link-btn" data-view="${m.id}">Read note</button>` : '')}
+      ${
+        m.url
+          ? `<a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer" class="link-btn">${icon("externallink", "icon-sm")}<span>Open</span></a>`
+          : m.type === "Note" && m.description
+            ? `<button class="link-btn" data-view="${m.id}">Read note</button>`
+            : ""
+      }
     </div>
   </div>`;
 }
 
 function attachMaterialHandlers(container) {
-  container.querySelectorAll('[data-edit]').forEach((b) => b.addEventListener('click', () => openMaterialForm(b.dataset.edit)));
-  container.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => handleDeleteMaterial(b.dataset.del)));
-  container.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => viewNoteMaterial(b.dataset.view)));
+  container
+    .querySelectorAll("[data-edit]")
+    .forEach((b) =>
+      b.addEventListener("click", () => openMaterialForm(b.dataset.edit)),
+    );
+  container
+    .querySelectorAll("[data-del]")
+    .forEach((b) =>
+      b.addEventListener("click", () => handleDeleteMaterial(b.dataset.del)),
+    );
+  container
+    .querySelectorAll("[data-view]")
+    .forEach((b) =>
+      b.addEventListener("click", () => viewNoteMaterial(b.dataset.view)),
+    );
 }
 
 function viewNoteMaterial(id) {
   const m = state.materials.find((x) => String(x.id) === String(id));
   if (!m) return;
-  openModal(m.title, `
+  openModal(
+    m.title,
+    `
     <div class="subject-tag" style="margin-bottom:14px;"><span class="subject-dot" style="background:${subjectColorVar(m.subject)}"></span>${esc(m.subject)}</div>
-    <p style="white-space:pre-wrap; font-size:14px; line-height:1.7; color:var(--text-primary);">${esc(m.description || 'No content written yet.')}</p>
-  `, { wide: true, noFocus: true });
+    <p style="white-space:pre-wrap; font-size:14px; line-height:1.7; color:var(--text-primary);">${esc(m.description || "No content written yet.")}</p>
+  `,
+    { wide: true, noFocus: true },
+  );
 }
 
 function openMaterialForm(id) {
-  const m = id ? state.materials.find((x) => String(x.id) === String(id)) : null;
+  const m = id
+    ? state.materials.find((x) => String(x.id) === String(id))
+    : null;
   const isEdit = !!m;
-  openModal(isEdit ? 'Edit material' : 'Add material', `
+  openModal(
+    isEdit ? "Edit material" : "Add material",
+    `
     <form id="materialForm">
       <div class="form-group">
         <label>Title</label>
-        <input class="input" name="title" required placeholder="e.g. Chapter 4 summary" value="${m ? esc(m.title) : ''}">
+        <input class="input" name="title" required placeholder="e.g. Chapter 4 summary" value="${m ? esc(m.title) : ""}">
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Subject</label>
-          <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Database Systems" value="${m ? esc(m.subject) : ''}">
+          <input class="input" name="subject" list="subjectsDatalist" required placeholder="e.g. Database Systems" value="${m ? esc(m.subject) : ""}">
         </div>
         <div class="form-group">
           <label>Type</label>
           <select class="select" name="type">
-            ${MATERIAL_TYPES.map((t) => `<option ${m && m.type === t ? 'selected' : ''}>${t}</option>`).join('')}
+            ${MATERIAL_TYPES.map((t) => `<option ${m && m.type === t ? "selected" : ""}>${t}</option>`).join("")}
           </select>
         </div>
       </div>
       <div class="form-group">
         <label>Link (optional)</label>
-        <input class="input" type="text" name="url" placeholder="https://…" value="${m ? esc(m.url || '') : ''}">
+        <input class="input" type="text" name="url" placeholder="https://…" value="${m ? esc(m.url || "") : ""}">
       </div>
       <div class="form-group">
         <label>Description or note content</label>
-        <textarea class="textarea" name="description" placeholder="Write a note here, or add a short description of the linked resource" style="min-height:110px;">${m ? esc(m.description || '') : ''}</textarea>
+        <textarea class="textarea" name="description" placeholder="Write a note here, or add a short description of the linked resource" style="min-height:110px;">${m ? esc(m.description || "") : ""}</textarea>
       </div>
-      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? 'space-between' : 'flex-end'}; width:100%;">
-        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="materialDeleteBtn">Delete</button>` : ''}
-        <button type="submit" class="premium-btn primary-btn">${isEdit ? 'Save changes' : 'Add material'}</button>
+      <div class="modal-actions" style="display:flex; gap:12px; justify-content: ${isEdit ? "space-between" : "flex-end"}; width:100%;">
+        ${isEdit ? `<button type="button" class="premium-btn danger-btn" id="materialDeleteBtn">Delete</button>` : ""}
+        <button type="submit" class="premium-btn primary-btn">${isEdit ? "Save changes" : "Add material"}</button>
       </div>
     </form>
-  `, { wide: true });
-  document.getElementById('materialForm').addEventListener('submit', (e) => { e.preventDefault(); saveMaterialFromForm(e.target, id); });
+  `,
+    { wide: true },
+  );
+  document.getElementById("materialForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    saveMaterialFromForm(e.target, id);
+  });
   if (isEdit) {
-      document.getElementById('materialDeleteBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          handleDeleteMaterial(id);
+    document
+      .getElementById("materialDeleteBtn")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        handleDeleteMaterial(id);
       });
   }
 }
 
 function saveMaterialFromForm(form, id) {
   const fd = new FormData(form);
-  let url = fd.get('url').trim();
-  if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
+  let url = fd.get("url").trim();
+  if (url && !/^https?:\/\//i.test(url)) url = "https://" + url;
   const data = {
-    title: fd.get('title').trim(),
-    subject: fd.get('subject').trim(),
-    type: fd.get('type'),
+    title: fd.get("title").trim(),
+    subject: fd.get("subject").trim(),
+    type: fd.get("type"),
     url,
-    description: fd.get('description').trim(),
+    description: fd.get("description").trim(),
   };
   if (id) {
     const idx = state.materials.findIndex((x) => String(x.id) === String(id));
     state.materials[idx] = { ...state.materials[idx], ...data };
   } else {
-    state.materials.push({ id: uid(), ...data, createdAt: new Date().toISOString() });
+    state.materials.push({
+      id: uid(),
+      ...data,
+      createdAt: new Date().toISOString(),
+    });
   }
   renderMaterials();
   closeModal();
-  showToast(id ? 'Material updated' : 'Material added');
-  DB.set('materials-list', state.materials);
+  showToast(id ? "Material updated" : "Material added");
+  DB.set("materials-list", state.materials);
 }
 
 function handleDeleteMaterial(id) {
   confirmDialog("Delete this material? This can't be undone.", () => {
-    state.materials = state.materials.filter((x) => String(x.id) !== String(id));
+    state.materials = state.materials.filter(
+      (x) => String(x.id) !== String(id),
+    );
     renderMaterials();
-    showToast('Material deleted');
-    DB.set('materials-list', state.materials);
+    showToast("Material deleted");
+    DB.set("materials-list", state.materials);
   });
 }
 
@@ -1587,20 +2120,23 @@ function renderDashboard() {
 
 function renderGreeting() {
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  const name = state.settings.name ? `, ${state.settings.name}` : '';
-  document.getElementById('greetingText').textContent = `${greeting}${name}`;
-  document.getElementById('greetingDate').textContent = formatDateFull(todayISO());
+  const greeting =
+    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const name = state.settings.name ? `, ${state.settings.name}` : "";
+  document.getElementById("greetingText").textContent = `${greeting}${name}`;
+  document.getElementById("greetingDate").textContent =
+    formatDateFull(todayISO());
 }
 
 function computeOverallAttendance() {
   const records = state.attendance.records;
   if (!records.length) return null;
-  let attended = 0, total = 0;
+  let attended = 0,
+    total = 0;
   records.forEach((r) => {
-    if (r.status === 'excused') return;
+    if (r.status === "excused") return;
     total++;
-    if (r.status === 'present' || r.status === 'late') attended++;
+    if (r.status === "present" || r.status === "late") attended++;
   });
   if (total === 0) return null;
   return Math.round((attended / total) * 1000) / 10;
@@ -1609,25 +2145,27 @@ function computeOverallAttendance() {
 function renderStatStrip() {
   const cgpa = computeOverallCGPA();
   const attendance = computeOverallAttendance();
-  const pendingCount = state.assignments.filter((a) => a.status !== 'completed').length;
+  const pendingCount = state.assignments.filter(
+    (a) => a.status !== "completed",
+  ).length;
   const upcomingExam = getUpcomingExams()[0];
 
-  let examLabel = 'None scheduled';
+  let examLabel = "None scheduled";
   if (upcomingExam) {
     const d = daysBetween(todayISO(), upcomingExam.date);
-    examLabel = d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : `In ${d} days`;
+    examLabel = d === 0 ? "Today" : d === 1 ? "Tomorrow" : `In ${d} days`;
   }
 
-  const attClass = attendance == null ? '' : attendanceStatusClass(attendance);
+  const attClass = attendance == null ? "" : attendanceStatusClass(attendance);
 
-  document.getElementById('statStrip').innerHTML = `
+  document.getElementById("statStrip").innerHTML = `
     <div class="cgpa-seal">
-      <div class="num">${cgpa != null ? cgpa.toFixed(2) : '—'}</div>
+      <div class="num">${cgpa != null ? cgpa.toFixed(2) : "—"}</div>
       <div class="lbl">CGPA</div>
     </div>
     <div class="stat-block clickable" data-goto="attendance">
       <div class="stat-label">Overall attendance</div>
-      <div class="stat-value">${attendance != null ? attendance + '%' : 'No records yet'}</div>
+      <div class="stat-value">${attendance != null ? attendance + "%" : "No records yet"}</div>
       <div class="stat-fill-track"><div class="stat-fill-bar ${attClass}" style="width:${attendance || 0}%"></div></div>
     </div>
     <div class="stat-block clickable" data-goto="assignments">
@@ -1643,80 +2181,123 @@ function renderStatStrip() {
 
 function renderTodayClasses() {
   const today = WEEKDAYS[new Date().getDay()];
-  const classes = state.routine.filter((r) => r.day === today).sort((a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime));
-  const container = document.getElementById('todayClassesList');
+  const classes = state.routine
+    .filter((r) => r.day === today)
+    .sort((a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime));
+  const container = document.getElementById("todayClassesList");
   if (!classes.length) {
-    container.innerHTML = emptyStateHtml('calendar', 'No classes today', 'Enjoy the free time, or add a class to your routine.');
+    container.innerHTML = emptyStateHtml(
+      "calendar",
+      "No classes today",
+      "Enjoy the free time, or add a class to your routine.",
+    );
     return;
   }
-  container.innerHTML = classes.map((c) => `
+  container.innerHTML = classes
+    .map(
+      (c) => `
     <div class="dash-mini-row">
       <span class="time-chip">${formatTime12(c.startTime)}</span>
       <span class="subject-dot" style="background:${subjectColorVar(c.subject)}"></span>
       <span class="mini-title">${esc(c.subject)}</span>
-      <span class="mini-sub">${esc(c.room || '')}</span>
+      <span class="mini-sub">${esc(c.room || "")}</span>
     </div>
-  `).join('');
+  `,
+    )
+    .join("");
 }
 
 function renderUpcomingAssignmentsPanel() {
-  const list = state.assignments.filter((a) => a.status !== 'completed').sort((a, b) => a.dueDate.localeCompare(b.dueDate)).slice(0, 5);
-  const container = document.getElementById('upcomingAssignmentsList');
+  const list = state.assignments
+    .filter((a) => a.status !== "completed")
+    .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
+    .slice(0, 5);
+  const container = document.getElementById("upcomingAssignmentsList");
   if (!list.length) {
-    container.innerHTML = emptyStateHtml('clipboard', 'All caught up', 'No pending assignments right now.');
+    container.innerHTML = emptyStateHtml(
+      "clipboard",
+      "All caught up",
+      "No pending assignments right now.",
+    );
     return;
   }
-  container.innerHTML = list.map((a) => {
-    const due = relativeDueLabel(a.dueDate);
-    const color = due.tone === 'danger' ? 'var(--clay)' : due.tone === 'warning' ? 'var(--brass)' : 'var(--text-tertiary)';
-    return `
+  container.innerHTML = list
+    .map((a) => {
+      const due = relativeDueLabel(a.dueDate);
+      const color =
+        due.tone === "danger"
+          ? "var(--clay)"
+          : due.tone === "warning"
+            ? "var(--brass)"
+            : "var(--text-tertiary)";
+      return `
     <div class="dash-mini-row">
       <span class="subject-dot" style="background:${subjectColorVar(a.subject)}"></span>
       <span class="mini-title">${esc(a.title)}</span>
       <span class="mini-sub" style="color:${color}">${due.text}</span>
     </div>`;
-  }).join('');
+    })
+    .join("");
 }
 
 function renderUpcomingExamsPanel() {
   const list = getUpcomingExams().slice(0, 3);
-  const container = document.getElementById('upcomingExamsList');
+  const container = document.getElementById("upcomingExamsList");
   if (!list.length) {
-    container.innerHTML = emptyStateHtml('examfile', 'Nothing on the horizon', 'No upcoming exams scheduled.');
+    container.innerHTML = emptyStateHtml(
+      "examfile",
+      "Nothing on the horizon",
+      "No upcoming exams scheduled.",
+    );
     return;
   }
-  container.innerHTML = list.map((ex) => {
-    const d = daysBetween(todayISO(), ex.date);
-    const label = d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : `In ${d} days`;
-    return `
+  container.innerHTML = list
+    .map((ex) => {
+      const d = daysBetween(todayISO(), ex.date);
+      const label = d === 0 ? "Today" : d === 1 ? "Tomorrow" : `In ${d} days`;
+      return `
     <div class="dash-mini-row">
       <span class="subject-dot" style="background:${subjectColorVar(ex.subject)}"></span>
       <span class="mini-title">${esc(ex.subject)}</span>
       <span class="badge badge-neutral">${esc(ex.examType)}</span>
       <span class="mini-sub">${label}</span>
     </div>`;
-  }).join('');
+    })
+    .join("");
 }
 
 function renderAttendanceWatch() {
-  const container = document.getElementById('attendanceWatchList');
+  const container = document.getElementById("attendanceWatchList");
   if (!state.attendance.subjects.length) {
-    container.innerHTML = emptyStateHtml('checkcircle', 'Not tracking yet', 'Add a subject on the Attendance page to start.');
+    container.innerHTML = emptyStateHtml(
+      "checkcircle",
+      "Not tracking yet",
+      "Add a subject on the Attendance page to start.",
+    );
     return;
   }
-  const subjects = state.attendance.subjects.map((s) => ({ ...s, ...computeSubjectAttendance(s.id) }));
-  const below = subjects.filter((s) => s.total > 0 && s.pct < state.settings.attendanceThreshold);
+  const subjects = state.attendance.subjects.map((s) => ({
+    ...s,
+    ...computeSubjectAttendance(s.id),
+  }));
+  const below = subjects.filter(
+    (s) => s.total > 0 && s.pct < state.settings.attendanceThreshold,
+  );
   if (!below.length) {
-    container.innerHTML = `<div class="dash-mini-row"><span style="color:var(--pine); display:flex;">${icon('checkcircle', 'icon-sm')}</span><span class="mini-title">All subjects are within a healthy range</span></div>`;
+    container.innerHTML = `<div class="dash-mini-row"><span style="color:var(--pine); display:flex;">${icon("checkcircle", "icon-sm")}</span><span class="mini-title">All subjects are within a healthy range</span></div>`;
     return;
   }
-  container.innerHTML = below.map((s) => `
+  container.innerHTML = below
+    .map(
+      (s) => `
     <div class="dash-mini-row">
       <span class="subject-dot" style="background:${subjectColorVar(s.name)}"></span>
       <span class="mini-title">${esc(s.name)}</span>
       <span class="mini-sub" style="color:var(--clay); font-weight:600;">${s.pct}%</span>
     </div>
-  `).join('');
+  `,
+    )
+    .join("");
 }
 
 RENDER_FNS.dashboard = renderDashboard;
@@ -1727,7 +2308,9 @@ RENDER_FNS.dashboard = renderDashboard;
 
 function openSettingsModal() {
   const s = state.settings;
-  openModal('Settings', `
+  openModal(
+    "Settings",
+    `
     <form id="settingsForm">
       <div class="form-row">
         <div class="form-group">
@@ -1752,31 +2335,49 @@ function openSettingsModal() {
       <h3 style="margin-top:0; font-size:1.1rem; font-weight:500;">Your data</h3>
       <p style="font-size: 0.85rem; color: var(--text-tertiary); margin-bottom:16px;">Everything you enter is saved automatically. You can also back it up to a file, or restore from a previous backup.</p>
       <div class="toolbar-btns" style="margin-bottom:16px; display:flex; flex-wrap:wrap; gap:10px;">
-        <button type="button" class="premium-btn outline-btn" id="exportDataBtn">${icon('download', 'icon-sm')}<span>Export backup</span></button>
-        <button type="button" class="premium-btn outline-btn" id="importDataBtn">${icon('upload', 'icon-sm')}<span>Import backup</span></button>
+        <button type="button" class="premium-btn outline-btn" id="exportDataBtn">${icon("download", "icon-sm")}<span>Export backup</span></button>
+        <button type="button" class="premium-btn outline-btn" id="importDataBtn">${icon("upload", "icon-sm")}<span>Import backup</span></button>
         <input type="file" id="importDataInput" accept="application/json" class="hidden">
       </div>
-      <button type="button" class="premium-btn danger-btn" id="clearDataBtn">${icon('trash', 'icon-sm')}<span>Clear all data</span></button>
+      <button type="button" class="premium-btn danger-btn" id="clearDataBtn">${icon("trash", "icon-sm")}<span>Clear all data</span></button>
     </div>
-  `, { wide: true });
+  `,
+    { wide: true },
+  );
 
-  document.getElementById('settingsForm').addEventListener('submit', (e) => {
+  document.getElementById("settingsForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    state.settings.institution = fd.get('institution').trim();
-    state.settings.department = fd.get('department').trim();
-    state.settings.attendanceThreshold = clamp(Number(fd.get('attendanceThreshold')) || 75, 0, 100);
+    state.settings.institution = fd.get("institution").trim();
+    state.settings.department = fd.get("department").trim();
+    state.settings.attendanceThreshold = clamp(
+      Number(fd.get("attendanceThreshold")) || 75,
+      0,
+      100,
+    );
     closeModal();
     renderCurrentSection();
-    showToast('Settings saved');
-    DB.set('settings', state.settings);
+    showToast("Settings saved");
+    DB.set("settings", state.settings);
   });
 
-  document.getElementById('exportDataBtn').addEventListener('click', exportAllData);
-  document.getElementById('importDataBtn').addEventListener('click', () => document.getElementById('importDataInput').click());
-  document.getElementById('importDataInput').addEventListener('change', handleImportFile);
-  document.getElementById('clearDataBtn').addEventListener('click', () => {
-    confirmDialog("This deletes every class, assignment, exam, attendance record, grade, and material you have saved. This can't be undone.", clearAllData, 'Clear everything');
+  document
+    .getElementById("exportDataBtn")
+    .addEventListener("click", exportAllData);
+  document
+    .getElementById("importDataBtn")
+    .addEventListener("click", () =>
+      document.getElementById("importDataInput").click(),
+    );
+  document
+    .getElementById("importDataInput")
+    .addEventListener("change", handleImportFile);
+  document.getElementById("clearDataBtn").addEventListener("click", () => {
+    confirmDialog(
+      "This deletes every class, assignment, exam, attendance record, grade, and material you have saved. This can't be undone.",
+      clearAllData,
+      "Clear everything",
+    );
   });
 }
 
@@ -1791,16 +2392,18 @@ function exportAllData() {
     cgpa: state.cgpa,
     materials: state.materials,
   };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {
+    type: "application/json",
+  });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
   a.download = `coursebook-backup-${todayISO()}.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-  showToast('Backup downloaded');
+  showToast("Backup downloaded");
 }
 
 function handleImportFile(e) {
@@ -1812,37 +2415,44 @@ function handleImportFile(e) {
     try {
       data = JSON.parse(reader.result);
     } catch (err) {
-      showToast('That file could not be read as a backup', 'error');
+      showToast("That file could not be read as a backup", "error");
       return;
     }
-    confirmDialog('Importing will replace all current data with the contents of this backup. Continue?', async () => {
-      state.settings = { ...defaultSettings(), ...(data.settings || {}) };
-      state.routine = data.routine || [];
-      state.assignments = data.assignments || [];
-      state.exams = data.exams || [];
-      state.attendance = data.attendance || { subjects: [], records: [] };
-      state.cgpa = data.cgpa || { gradeScale: defaultGradeScale(), semesters: [] };
-      state.materials = data.materials || [];
-      await persistEverything();
-      applyTheme(state.settings.theme || 'light');
-      closeModal();
-      navigateTo('dashboard');
-      showToast('Backup restored');
-    }, 'Import & replace');
+    confirmDialog(
+      "Importing will replace all current data with the contents of this backup. Continue?",
+      async () => {
+        state.settings = { ...defaultSettings(), ...(data.settings || {}) };
+        state.routine = data.routine || [];
+        state.assignments = data.assignments || [];
+        state.exams = data.exams || [];
+        state.attendance = data.attendance || { subjects: [], records: [] };
+        state.cgpa = data.cgpa || {
+          gradeScale: defaultGradeScale(),
+          semesters: [],
+        };
+        state.materials = data.materials || [];
+        await persistEverything();
+        applyTheme(state.settings.theme || "light");
+        closeModal();
+        navigateTo("dashboard");
+        showToast("Backup restored");
+      },
+      "Import & replace",
+    );
   };
   reader.readAsText(file);
-  e.target.value = '';
+  e.target.value = "";
 }
 
 async function persistEverything() {
   await Promise.all([
-    DB.set('settings', state.settings),
-    DB.set('routine-entries', state.routine),
-    DB.set('assignments-list', state.assignments),
-    DB.set('exams-list', state.exams),
-    DB.set('attendance-data', state.attendance),
-    DB.set('cgpa-data', state.cgpa),
-    DB.set('materials-list', state.materials),
+    DB.set("settings", state.settings),
+    DB.set("routine-entries", state.routine),
+    DB.set("assignments-list", state.assignments),
+    DB.set("exams-list", state.exams),
+    DB.set("attendance-data", state.attendance),
+    DB.set("cgpa-data", state.cgpa),
+    DB.set("materials-list", state.materials),
   ]);
 }
 
@@ -1855,10 +2465,10 @@ async function clearAllData() {
   state.cgpa = { gradeScale: defaultGradeScale(), semesters: [] };
   state.materials = [];
   await persistEverything();
-  applyTheme('light');
+  applyTheme("light");
   closeModal();
-  navigateTo('dashboard');
-  showToast('All data cleared');
+  navigateTo("dashboard");
+  showToast("All data cleared");
 }
 
 /* =========================================================================
@@ -1866,90 +2476,106 @@ async function clearAllData() {
    ========================================================================= */
 
 function resizeAndConvertImage(file, maxWidth, maxHeight) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
 
-                if (width > height) {
-                    if (width > maxWidth) {
-                        height = Math.round((height * maxWidth) / width);
-                        width = maxWidth;
-                    }
-                } else {
-                    if (height > maxHeight) {
-                        width = Math.round((width * maxHeight) / height);
-                        height = maxHeight;
-                    }
-                }
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
 
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                resolve(canvas.toDataURL('image/jpeg', 0.7)); 
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", 0.7));
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
-window.openProfileModal = async function() {
+window.openProfileModal = async function () {
   const user = auth.currentUser;
   if (!user) {
-      showToast("User not authenticated", "error");
-      return;
+    showToast("User not authenticated", "error");
+    return;
   }
-  
+
   try {
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
-    
+
     let userName = user.displayName || "";
     let userEmail = user.email || "";
     let userRole = "UNKNOWN";
-    let github = "", linkedin = "", portfolio = "", photoURL = "", coverURL = "";
+    let github = "",
+      linkedin = "",
+      portfolio = "",
+      photoURL = "",
+      coverURL = "";
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      if(data.name) userName = data.name;
-      if(data.role) userRole = data.role;
+      if (data.name) userName = data.name;
+      if (data.role) userRole = data.role;
       github = data.github || "";
       linkedin = data.linkedin || "";
       portfolio = data.portfolio || "";
       photoURL = data.photoURL || "";
       coverURL = data.coverURL || "";
     }
-    if (!userName && userEmail) userName = userEmail.split('@')[0];
-    const firstLetter = userName ? userName.charAt(0).toUpperCase() : 'U';
+    if (!userName && userEmail) userName = userEmail.split("@")[0];
+    const firstLetter = userName ? userName.charAt(0).toUpperCase() : "U";
 
     const cgpa = computeOverallCGPA();
     const attendance = computeOverallAttendance();
-    const totalCredits = state.cgpa.semesters.reduce((sum, sem) => sum + sem.courses.reduce((s, c) => s + Number(c.credit || 0), 0), 0);
+    const totalCredits = state.cgpa.semesters.reduce(
+      (sum, sem) =>
+        sum + sem.courses.reduce((s, c) => s + Number(c.credit || 0), 0),
+      0,
+    );
 
-    let badgesHtml = '';
-    if (cgpa != null && cgpa >= 3.8) badgesHtml += `<span class="badge" style="background:#FFD700; color:#000; font-weight:bold; margin-right:5px; margin-bottom:5px;">🏆 Dean's List</span>`;
-    if (attendance != null && attendance >= 95) badgesHtml += `<span class="badge" style="background:#2ecc71; color:#fff; font-weight:bold; margin-right:5px; margin-bottom:5px;">🌟 Perfect Attendance</span>`;
-    if (userRole.toLowerCase() === 'admin') badgesHtml += `<span class="badge" style="background:#e74c3c; color:#fff; font-weight:bold; margin-bottom:5px;">🛡️ Admin</span>`;
-    if (!badgesHtml) badgesHtml = `<span style="color:var(--text-tertiary); font-size:13px;">No badges earned yet. Complete goals to unlock!</span>`;
+    let badgesHtml = "";
+    if (cgpa != null && cgpa >= 3.8)
+      badgesHtml += `<span class="badge" style="background:#FFD700; color:#000; font-weight:bold; margin-right:5px; margin-bottom:5px;">🏆 Dean's List</span>`;
+    if (attendance != null && attendance >= 95)
+      badgesHtml += `<span class="badge" style="background:#2ecc71; color:#fff; font-weight:bold; margin-right:5px; margin-bottom:5px;">🌟 Perfect Attendance</span>`;
+    if (userRole.toLowerCase() === "admin")
+      badgesHtml += `<span class="badge" style="background:#e74c3c; color:#fff; font-weight:bold; margin-bottom:5px;">🛡️ Admin</span>`;
+    if (!badgesHtml)
+      badgesHtml = `<span style="color:var(--text-tertiary); font-size:13px;">No badges earned yet. Complete goals to unlock!</span>`;
 
-    const coverStyle = coverURL ? `background: url('${coverURL}') center/cover;` : `background: linear-gradient(135deg, var(--pine), #2A9D8F);`;
-    const avatarStyle = photoURL ? `background: url('${photoURL}') center/cover;` : `background: var(--pine);`;
+    const coverStyle = coverURL
+      ? `background: url('${coverURL}') center/cover;`
+      : `background: linear-gradient(135deg, var(--pine), #2A9D8F);`;
+    const avatarStyle = photoURL
+      ? `background: url('${photoURL}') center/cover;`
+      : `background: var(--pine);`;
 
     const modalHtml = `
       <!-- ================= VIEW MODE ================= -->
       <div id="profile-view-mode">
           <div style="position: relative; margin: -24px -24px 20px -24px; text-align: center;">
               <div style="height: 150px; ${coverStyle} border-radius: 24px 24px 0 0;"></div>
-              <div style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--surface); margin: -50px auto 10px auto; ${avatarStyle} display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: bold; color: ${photoURL ? 'transparent' : 'white'}; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; z-index: 2;">
-                  ${!photoURL ? firstLetter : ''}
+              <div style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--surface); margin: -50px auto 10px auto; ${avatarStyle} display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: bold; color: ${photoURL ? "transparent" : "white"}; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; z-index: 2;">
+                  ${!photoURL ? firstLetter : ""}
               </div>
-              <button id="toggle-edit-btn" class="icon-btn" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 50%; color: var(--pine);" title="Edit Profile">${icon('edit')}</button>
+              <button id="toggle-edit-btn" class="icon-btn" style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.9); box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 50%; color: var(--pine);" title="Edit Profile">${icon("edit")}</button>
               <h2 style="margin: 0; font-size: 22px; color: var(--text-primary); font-weight: 600;">${esc(userName)}</h2>
               <p style="margin: 4px 0 10px 0; color: var(--text-secondary); font-size: 14px;">${esc(userEmail)}</p>
               <span class="badge badge-neutral" style="letter-spacing: 1px;">ROLE: ${esc(userRole.toUpperCase())}</span>
@@ -1957,11 +2583,11 @@ window.openProfileModal = async function() {
 
           <div class="dashboard-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px;">
               <div style="background: var(--surface-hover); padding: 15px; border-radius: 8px; text-align: center;">
-                  <div style="font-size: 20px; font-weight: 600; color: #4F46E5;">${cgpa != null ? cgpa.toFixed(2) : 'N/A'}</div>
+                  <div style="font-size: 20px; font-weight: 600; color: #4F46E5;">${cgpa != null ? cgpa.toFixed(2) : "N/A"}</div>
                   <div style="font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; margin-top:4px;">Current CGPA</div>
               </div>
               <div style="background: var(--surface-hover); padding: 15px; border-radius: 8px; text-align: center;">
-                  <div style="font-size: 20px; font-weight: 600; color: #4F46E5;">${attendance != null ? attendance + '%' : 'N/A'}</div>
+                  <div style="font-size: 20px; font-weight: 600; color: #4F46E5;">${attendance != null ? attendance + "%" : "N/A"}</div>
                   <div style="font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; margin-top:4px;">Attendance</div>
               </div>
               <div style="background: var(--surface-hover); padding: 15px; border-radius: 8px; text-align: center;">
@@ -1980,9 +2606,9 @@ window.openProfileModal = async function() {
           <div>
               <h4 style="margin: 0 0 10px 0; font-size: 13px; color: var(--text-tertiary); text-transform: uppercase;">Professional Links</h4>
               <div style="display: flex; flex-direction: column; gap: 8px;">
-                  ${github ? `<a href="${github.includes('http') ? esc(github) : 'https://github.com/'+esc(github)}" target="_blank" class="link-btn" style="text-align:left;">${icon('link', 'icon-sm')} GitHub:${esc(github)}</a>` : `<span style="color: var(--text-tertiary); font-size: 13px;">GitHub: Not added</span>`}
-                  ${linkedin ? `<a href="${linkedin.includes('http') ? esc(linkedin) : 'https://'+esc(linkedin)}" target="_blank" class="link-btn" style="text-align:left;">${icon('link', 'icon-sm')} LinkedIn:${esc(linkedin)}</a>` : `<span style="color: var(--text-tertiary); font-size: 13px;">LinkedIn: Not added</span>`}
-                  ${portfolio ? `<a href="${portfolio.includes('http') ? esc(portfolio) : 'https://'+esc(portfolio)}" target="_blank" class="link-btn" style="text-align:left;">${icon('link', 'icon-sm')} Portfolio:${esc(portfolio)}</a>` : `<span style="color: var(--text-tertiary); font-size: 13px;">Portfolio: Not added</span>`}
+                  ${github ? `<a href="${github.includes("http") ? esc(github) : "https://github.com/" + esc(github)}" target="_blank" class="link-btn" style="text-align:left;">${icon("link", "icon-sm")} GitHub:${esc(github)}</a>` : `<span style="color: var(--text-tertiary); font-size: 13px;">GitHub: Not added</span>`}
+                  ${linkedin ? `<a href="${linkedin.includes("http") ? esc(linkedin) : "https://" + esc(linkedin)}" target="_blank" class="link-btn" style="text-align:left;">${icon("link", "icon-sm")} LinkedIn:${esc(linkedin)}</a>` : `<span style="color: var(--text-tertiary); font-size: 13px;">LinkedIn: Not added</span>`}
+                  ${portfolio ? `<a href="${portfolio.includes("http") ? esc(portfolio) : "https://" + esc(portfolio)}" target="_blank" class="link-btn" style="text-align:left;">${icon("link", "icon-sm")} Portfolio:${esc(portfolio)}</a>` : `<span style="color: var(--text-tertiary); font-size: 13px;">Portfolio: Not added</span>`}
               </div>
           </div>
       </div>
@@ -2027,54 +2653,58 @@ window.openProfileModal = async function() {
       </div>
     `;
 
-    openModal('My Profile', modalHtml, { wide: true });
+    openModal("My Profile", modalHtml, { wide: true });
 
-    document.getElementById('toggle-edit-btn').addEventListener('click', () => {
-        document.getElementById('profile-view-mode').classList.add('hidden');
-        document.getElementById('profile-edit-mode').classList.remove('hidden');
+    document.getElementById("toggle-edit-btn").addEventListener("click", () => {
+      document.getElementById("profile-view-mode").classList.add("hidden");
+      document.getElementById("profile-edit-mode").classList.remove("hidden");
     });
-    document.getElementById('cancel-edit-btn').addEventListener('click', () => {
-        document.getElementById('profile-edit-mode').classList.add('hidden');
-        document.getElementById('profile-view-mode').classList.remove('hidden');
+    document.getElementById("cancel-edit-btn").addEventListener("click", () => {
+      document.getElementById("profile-edit-mode").classList.add("hidden");
+      document.getElementById("profile-view-mode").classList.remove("hidden");
     });
 
-    document.getElementById('save-profile-btn').addEventListener('click', async () => {
-        const btn = document.getElementById('save-profile-btn');
+    document
+      .getElementById("save-profile-btn")
+      .addEventListener("click", async () => {
+        const btn = document.getElementById("save-profile-btn");
         btn.textContent = "Saving...";
         btn.disabled = true;
 
         try {
-            const updates = {
-                name: document.getElementById('edit-name').value.trim(),
-                github: document.getElementById('edit-github').value.trim(),
-                linkedin: document.getElementById('edit-linkedin').value.trim(),
-                portfolio: document.getElementById('edit-portfolio').value.trim()
-            };
+          const updates = {
+            name: document.getElementById("edit-name").value.trim(),
+            github: document.getElementById("edit-github").value.trim(),
+            linkedin: document.getElementById("edit-linkedin").value.trim(),
+            portfolio: document.getElementById("edit-portfolio").value.trim(),
+          };
 
-            const avatarFile = document.getElementById('avatar-upload').files[0];
-            const coverFile = document.getElementById('cover-upload').files[0];
+          const avatarFile = document.getElementById("avatar-upload").files[0];
+          const coverFile = document.getElementById("cover-upload").files[0];
 
-            if (avatarFile) {
-                updates.photoURL = await resizeAndConvertImage(avatarFile, 200, 200);
-            }
-            if (coverFile) {
-                updates.coverURL = await resizeAndConvertImage(coverFile, 600, 300);
-            }
+          if (avatarFile) {
+            updates.photoURL = await resizeAndConvertImage(
+              avatarFile,
+              200,
+              200,
+            );
+          }
+          if (coverFile) {
+            updates.coverURL = await resizeAndConvertImage(coverFile, 600, 300);
+          }
 
-            await setDoc(doc(db, "users", user.uid), updates, { merge: true });
-            
-            showToast("Profile updated successfully!");
-            closeModal();
-            setTimeout(() => window.openProfileModal(), 300);
+          await setDoc(doc(db, "users", user.uid), updates, { merge: true });
 
+          showToast("Profile updated successfully!");
+          closeModal();
+          setTimeout(() => window.openProfileModal(), 300);
         } catch (error) {
-            console.error("Profile Save Error: ", error);
-            showToast("Error updating profile. Check console.", "error");
-            btn.textContent = "Save Changes";
-            btn.disabled = false;
+          console.error("Profile Save Error: ", error);
+          showToast("Error updating profile. Check console.", "error");
+          btn.textContent = "Save Changes";
+          btn.disabled = false;
         }
-    });
-
+      });
   } catch (error) {
     console.error("Profile Load Error: ", error);
     showToast("Error loading profile: " + error.message, "error");
@@ -2086,93 +2716,150 @@ window.openProfileModal = async function() {
    ========================================================================= */
 
 async function loadState() {
-  const [settings, routine, assignments, exams, attendance, cgpa, materials] = await Promise.all([
-    DB.get('settings', defaultSettings()),
-    DB.get('routine-entries', []),
-    DB.get('assignments-list', []),
-    DB.get('exams-list', []),
-    DB.get('attendance-data', { subjects: [], records: [] }),
-    DB.get('cgpa-data', { gradeScale: defaultGradeScale(), semesters: [] }),
-    DB.get('materials-list', []),
-  ]);
+  const [settings, routine, assignments, exams, attendance, cgpa, materials] =
+    await Promise.all([
+      DB.get("settings", defaultSettings()),
+      DB.get("routine-entries", []),
+      DB.get("assignments-list", []),
+      DB.get("exams-list", []),
+      DB.get("attendance-data", { subjects: [], records: [] }),
+      DB.get("cgpa-data", { gradeScale: defaultGradeScale(), semesters: [] }),
+      DB.get("materials-list", []),
+    ]);
   state.settings = { ...defaultSettings(), ...settings };
   state.routine = Array.isArray(routine) ? routine : [];
   state.assignments = Array.isArray(assignments) ? assignments : [];
   state.exams = Array.isArray(exams) ? exams : [];
-  state.attendance = attendance && attendance.subjects ? attendance : { subjects: [], records: [] };
-  state.cgpa = cgpa && cgpa.gradeScale ? cgpa : { gradeScale: defaultGradeScale(), semesters: [] };
+  state.attendance =
+    attendance && attendance.subjects
+      ? attendance
+      : { subjects: [], records: [] };
+  state.cgpa =
+    cgpa && cgpa.gradeScale
+      ? cgpa
+      : { gradeScale: defaultGradeScale(), semesters: [] };
   state.materials = Array.isArray(materials) ? materials : [];
 }
 
 function attachStaticListeners() {
-  document.querySelectorAll('.nav-item[data-section]').forEach((btn) => {
-    btn.addEventListener('click', () => navigateTo(btn.dataset.section));
+  document.querySelectorAll(".nav-item[data-section]").forEach((btn) => {
+    btn.addEventListener("click", () => navigateTo(btn.dataset.section));
   });
 
-  document.addEventListener('click', (e) => {
-    const gotoEl = e.target.closest('[data-goto]');
+  document.addEventListener("click", (e) => {
+    const gotoEl = e.target.closest("[data-goto]");
     if (gotoEl) navigateTo(gotoEl.dataset.goto);
   });
 
-  document.getElementById('menuBtn').addEventListener('click', openSidebar);
-  document.getElementById('sidebarCloseBtn').addEventListener('click', closeSidebar);
-  document.getElementById('sidebarBackdrop').addEventListener('click', closeSidebar);
-  document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
-  document.getElementById('themeToggleTop').addEventListener('click', toggleTheme);
-  
-  const profileBtn = document.getElementById('profile-btn');
-  if(profileBtn) {
-      profileBtn.onclick = () => window.openProfileModal();
+  document.getElementById("menuBtn").addEventListener("click", openSidebar);
+  document
+    .getElementById("sidebarCloseBtn")
+    .addEventListener("click", closeSidebar);
+  document
+    .getElementById("sidebarBackdrop")
+    .addEventListener("click", closeSidebar);
+  document
+    .getElementById("themeToggleBtn")
+    .addEventListener("click", toggleTheme);
+  document
+    .getElementById("themeToggleTop")
+    .addEventListener("click", toggleTheme);
+
+  const profileBtn = document.getElementById("profile-btn");
+  if (profileBtn) {
+    profileBtn.onclick = () => window.openProfileModal();
   }
 
-  const logoutBtn = document.getElementById('logout-btn');
-  if(logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-          signOut(auth).then(() => {
-              window.location.replace("index.html");
-          }).catch((error) => {
-              alert("Logout error: " + error.message);
-          });
-      });
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth)
+        .then(() => {
+          window.location.replace("index.html");
+        })
+        .catch((error) => {
+          alert("Logout error: " + error.message);
+        });
+    });
   }
 
-  const settingsBtn = document.getElementById('settingsBtn');
-  if(settingsBtn) {
-      settingsBtn.addEventListener('click', () => {
-          closeSidebar(); 
-          openSettingsModal();
-      });
+  const settingsBtn = document.getElementById("settingsBtn");
+  if (settingsBtn) {
+    settingsBtn.addEventListener("click", () => {
+      closeSidebar();
+      openSettingsModal();
+    });
   }
 
-  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-  document.getElementById('modalOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'modalOverlay') closeModal();
+  document
+    .getElementById("modalCloseBtn")
+    .addEventListener("click", closeModal);
+  document.getElementById("modalOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "modalOverlay") closeModal();
   });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.getElementById('modalOverlay').classList.contains('open')) closeModal();
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "Escape" &&
+      document.getElementById("modalOverlay").classList.contains("open")
+    )
+      closeModal();
   });
 
-  document.getElementById('addRoutineBtn').addEventListener('click', () => openRoutineForm());
+  document
+    .getElementById("addRoutineBtn")
+    .addEventListener("click", () => openRoutineForm());
 
-  document.getElementById('addAssignmentBtn').addEventListener('click', () => openAssignmentForm());
-  document.getElementById('assignmentStatusFilter').addEventListener('change', (e) => { assignmentFilters.status = e.target.value; renderAssignments(); });
-  document.getElementById('assignmentSubjectFilter').addEventListener('change', (e) => { assignmentFilters.subject = e.target.value; renderAssignments(); });
+  document
+    .getElementById("addAssignmentBtn")
+    .addEventListener("click", () => openAssignmentForm());
+  document
+    .getElementById("assignmentStatusFilter")
+    .addEventListener("change", (e) => {
+      assignmentFilters.status = e.target.value;
+      renderAssignments();
+    });
+  document
+    .getElementById("assignmentSubjectFilter")
+    .addEventListener("change", (e) => {
+      assignmentFilters.subject = e.target.value;
+      renderAssignments();
+    });
 
-  document.getElementById('addExamBtn').addEventListener('click', () => openExamForm());
+  document
+    .getElementById("addExamBtn")
+    .addEventListener("click", () => openExamForm());
 
-  document.getElementById('addAttendanceSubjectBtn').addEventListener('click', () => openAttendanceSubjectForm());
+  document
+    .getElementById("addAttendanceSubjectBtn")
+    .addEventListener("click", () => openAttendanceSubjectForm());
 
-  document.getElementById('gradeScaleBtn').addEventListener('click', () => openGradeScaleModal());
-  document.getElementById('addSemesterBtn').addEventListener('click', () => openSemesterForm());
+  document
+    .getElementById("gradeScaleBtn")
+    .addEventListener("click", () => openGradeScaleModal());
+  document
+    .getElementById("addSemesterBtn")
+    .addEventListener("click", () => openSemesterForm());
 
-  document.getElementById('addMaterialBtn').addEventListener('click', () => openMaterialForm());
-  document.getElementById('materialsSearch').addEventListener('input', (e) => { materialsFilters.search = e.target.value; renderMaterials(); });
-  document.getElementById('materialsSubjectFilter').addEventListener('change', (e) => { materialsFilters.subject = e.target.value; renderMaterials(); });
+  document
+    .getElementById("addMaterialBtn")
+    .addEventListener("click", () => openMaterialForm());
+  document.getElementById("materialsSearch").addEventListener("input", (e) => {
+    materialsFilters.search = e.target.value;
+    renderMaterials();
+  });
+  document
+    .getElementById("materialsSubjectFilter")
+    .addEventListener("change", (e) => {
+      materialsFilters.subject = e.target.value;
+      renderMaterials();
+    });
 
   let resizeTimer;
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { if (getCurrentSection() === 'routine') renderRoutine(); }, 200);
+    resizeTimer = setTimeout(() => {
+      if (getCurrentSection() === "routine") renderRoutine();
+    }, 200);
   });
 }
 
@@ -2187,27 +2874,27 @@ async function init() {
   try {
     await loadState();
   } catch (err) {
-    console.error('Failed to load saved data, starting fresh.', err);
+    console.error("Failed to load saved data, starting fresh.", err);
   }
-  applyTheme(state.settings.theme || 'light');
+  applyTheme(state.settings.theme || "light");
   attachStaticListeners();
-  navigateTo('dashboard');
+  navigateTo("dashboard");
   refreshSubjectsDatalist();
 
-  const loader = document.getElementById('appLoader');
+  const loader = document.getElementById("appLoader");
   if (loader) {
-    loader.classList.add('hidden');
+    loader.classList.add("hidden");
     setTimeout(() => loader.remove(), 350);
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    onAuthStateChanged(auth, (user) => {
-        if (user && user.emailVerified) {
-            currentUserUid = user.uid;
-            init(); 
-        } else {
-            window.location.replace("index.html");
-        }
-    });
+document.addEventListener("DOMContentLoaded", () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.emailVerified) {
+      currentUserUid = user.uid;
+      init();
+    } else {
+      window.location.replace("index.html");
+    }
+  });
 });
