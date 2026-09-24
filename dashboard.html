@@ -4,28 +4,31 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#1C6B5A" />
+    <meta name="theme-color" content="#ffffff" />
     <script type="module" src="Function/script.js" defer></script>
     <link rel="stylesheet" href="Theme/style.css" />
     <link rel="icon" type="image/x-icon" href="Assets/CourseBookLogo.png" />
-    <meta
-      name="description"
-      content="Coursebook — a complete student academic management platform for class routines, assignments, exams, attendance, CGPA, and course materials."
+
+    <!-- Stylish Premium Font: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
     />
-    <title>Coursebook — Student Academic Management Platform</title>
+
+    <title>Course Book</title>
   </head>
   <body>
+    <!-- Clean Logo Loader -->
     <div id="appLoader">
-      <div class="loader-mark">
-        <img
-          src="Assets/CourseBookLogo.png"
-          alt="CourseBook Logo"
-          class="loader-logo"
-        />
-      </div>
-      <!-- <p>Opening your coursebook…</p> -->
+      <img
+        src="Assets/CourseBookLogo.png"
+        alt="Course Book"
+        class="loader-logo"
+      />
     </div>
 
     <div class="app-shell">
@@ -34,11 +37,11 @@
         <div class="sidebar-header">
           <div class="brand">
             <img
-              src="Assets/CourseBook.png"
+              src="Assets/CourseBookLogo.png"
               alt="CourseBook Logo"
               class="brand-mark"
             />
-            <span class="brand-name">Course Book</span>
+            <span class="brand-name">CourseBook</span>
           </div>
           <button
             class="icon-btn sidebar-close"
@@ -210,27 +213,34 @@
 
       <div class="main-area">
         <header class="topbar">
-          <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">
-            <svg
-              class="icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+          <div class="topbar-left">
+            <button
+              class="icon-btn menu-btn"
+              id="menuBtn"
+              aria-label="Open menu"
             >
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+          </div>
           <div class="topbar-actions">
             <button
               class="icon-btn"
               id="themeToggleTop"
               aria-label="Toggle theme"
+              style="margin-right: 10px"
             >
               <svg
                 class="icon"
@@ -244,42 +254,10 @@
                 <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" />
               </svg>
             </button>
-
-            <!-- NOTUN: Profile Button Ekhane Add Kora Holo -->
-            <button
-              id="profile-btn"
-              style="
-                background-color: #1c6b5a;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-                margin-left: 15px;
-                font-size: 14px;
-                box-shadow: 0 2px 4px rgba(28, 107, 90, 0.3);
-              "
-            >
+            <button class="premium-btn primary-btn" id="profile-btn">
               Profile
             </button>
-
-            <!-- Ager Logout Button -->
-            <button
-              id="logout-btn"
-              style="
-                background-color: #ff0015;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-weight: 600;
-                margin-left: 10px;
-                font-size: 14px;
-                box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
-              "
-            >
+            <button class="premium-btn danger-btn" id="logout-btn">
               Logout
             </button>
           </div>
@@ -334,7 +312,7 @@
           <section class="page" id="section-routine">
             <div class="page-toolbar">
               <div class="page-toolbar-info"><h2>Class routine</h2></div>
-              <button class="btn btn-primary" id="addRoutineBtn">
+              <button class="premium-btn primary-btn" id="addRoutineBtn">
                 <svg
                   class="icon"
                   viewBox="0 0 24 24"
@@ -345,15 +323,16 @@
                   stroke-linejoin="round"
                 >
                   <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" /></svg
-                ><span>Add class</span>
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add class
               </button>
             </div>
-            <div class="routine-grid-wrap">
+            <div class="routine-grid-wrap scroll-x">
               <div class="routine-grid" id="routineGrid"></div>
             </div>
             <div class="routine-mobile" id="routineMobile">
-              <div class="day-tabs" id="dayTabs"></div>
+              <div class="day-tabs scroll-x" id="dayTabs"></div>
               <div id="routineDayList"></div>
             </div>
           </section>
@@ -372,7 +351,7 @@
                   <option value="all">All subjects</option>
                 </select>
               </div>
-              <button class="btn btn-primary" id="addAssignmentBtn">
+              <button class="premium-btn primary-btn" id="addAssignmentBtn">
                 <svg
                   class="icon"
                   viewBox="0 0 24 24"
@@ -383,8 +362,9 @@
                   stroke-linejoin="round"
                 >
                   <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" /></svg
-                ><span>Add assignment</span>
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add assignment
               </button>
             </div>
             <div id="assignmentsContainer"></div>
@@ -394,7 +374,7 @@
           <section class="page" id="section-exams">
             <div class="page-toolbar">
               <div class="page-toolbar-info"><h2>Exam schedule</h2></div>
-              <button class="btn btn-primary" id="addExamBtn">
+              <button class="premium-btn primary-btn" id="addExamBtn">
                 <svg
                   class="icon"
                   viewBox="0 0 24 24"
@@ -405,8 +385,9 @@
                   stroke-linejoin="round"
                 >
                   <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" /></svg
-                ><span>Add exam</span>
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add exam
               </button>
             </div>
             <div id="nextExamBanner"></div>
@@ -418,7 +399,10 @@
             <div class="page-toolbar">
               <div class="page-toolbar-info"><h2>Attendance</h2></div>
               <div class="toolbar-btns">
-                <button class="btn btn-secondary" id="addAttendanceSubjectBtn">
+                <button
+                  class="premium-btn outline-btn"
+                  id="addAttendanceSubjectBtn"
+                >
                   <svg
                     class="icon"
                     viewBox="0 0 24 24"
@@ -429,8 +413,9 @@
                     stroke-linejoin="round"
                   >
                     <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" /></svg
-                  ><span>Add subject</span>
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Add subject
                 </button>
               </div>
             </div>
@@ -453,8 +438,11 @@
               <div class="page-toolbar-info">
                 <h2>Result / CGPA calculator</h2>
               </div>
-              <div class="toolbar-btns">
-                <button class="btn btn-secondary" id="gradeScaleBtn">
+              <div
+                class="toolbar-btns"
+                style="display: flex; gap: 10px; flex-wrap: wrap"
+              >
+                <button class="premium-btn outline-btn" id="gradeScaleBtn">
                   <svg
                     class="icon"
                     viewBox="0 0 24 24"
@@ -469,10 +457,11 @@
                     <line x1="4" y1="12" x2="20" y2="12" />
                     <circle cx="15" cy="12" r="2" />
                     <line x1="4" y1="18" x2="20" y2="18" />
-                    <circle cx="9" cy="18" r="2" /></svg
-                  ><span>Grade scale</span>
+                    <circle cx="9" cy="18" r="2" />
+                  </svg>
+                  Grade scale
                 </button>
-                <button class="btn btn-primary" id="addSemesterBtn">
+                <button class="premium-btn primary-btn" id="addSemesterBtn">
                   <svg
                     class="icon"
                     viewBox="0 0 24 24"
@@ -483,13 +472,14 @@
                     stroke-linejoin="round"
                   >
                     <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" /></svg
-                  ><span>Add semester</span>
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Add semester
                 </button>
               </div>
             </div>
             <div class="cgpa-summary" id="cgpaSummary"></div>
-            <div class="cgpa-chart-wrap hidden" id="cgpaChartWrap">
+            <div class="cgpa-chart-wrap hidden scroll-x" id="cgpaChartWrap">
               <h3>SGPA by semester</h3>
               <div id="cgpaChart"></div>
             </div>
@@ -510,7 +500,7 @@
                   <option value="all">All subjects</option>
                 </select>
               </div>
-              <button class="btn btn-primary" id="addMaterialBtn">
+              <button class="premium-btn primary-btn" id="addMaterialBtn">
                 <svg
                   class="icon"
                   viewBox="0 0 24 24"
@@ -521,27 +511,14 @@
                   stroke-linejoin="round"
                 >
                   <line x1="12" y1="5" x2="12" y2="19" />
-                  <line x1="5" y1="12" x2="19" y2="12" /></svg
-                ><span>Add material</span>
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add material
               </button>
             </div>
             <div class="materials-grid" id="materialsContainer"></div>
           </section>
         </main>
-        <footer class="footer items-center">
-          <div class="footer-content">
-            <p>
-              &copy; 2026 CourseBook. All rights reserved and Crafted with care
-              by
-              <a
-                href="https://therudrabro.github.io/Rudra_Mojumder-Portfolio/"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Rudra</a
-              >.
-            </p>
-          </div>
-        </footer>
       </div>
     </div>
 
@@ -555,7 +532,7 @@
       >
         <div class="modal-header">
           <h2 id="modalTitle">Title</h2>
-          <button class="icon-btn" id="modalCloseBtn" aria-label="Close">
+          <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -576,49 +553,5 @@
 
     <div class="toast-container" id="toastContainer"></div>
     <datalist id="subjectsDatalist"></datalist>
-
-    <!-- FIREBASE AUTHENTICATION SCRIPT -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import {
-        getAuth,
-        signOut,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-      // Firestore import for future use (Assignments, Routine etc)
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyC1VrcMa2Zo3wlhpEhDa14IrbXlEtjobjQ",
-        authDomain: "studentmanagement-84401.firebaseapp.com",
-        projectId: "studentmanagement-84401",
-        storageBucket: "studentmanagement-84401.firebasestorage.app",
-        messagingSenderId: "1023520287147",
-        appId: "1:1023520287147:web:a20a35d9f98cac6afa4aee",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      // Initialize Firestore
-      const db = getFirestore(app);
-
-      // Secure Dashboard Logic
-      onAuthStateChanged(auth, (user) => {
-        if (!user || !user.emailVerified) {
-          window.location.replace("index.html");
-        }
-      });
-
-      // Logout Logic
-      document.getElementById("logout-btn").addEventListener("click", () => {
-        signOut(auth)
-          .then(() => {
-            window.location.replace("index.html");
-          })
-          .catch((error) => {
-            alert("Logout error: " + error.message);
-          });
-      });
-    </script>
   </body>
 </html>

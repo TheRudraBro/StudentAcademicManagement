@@ -1,380 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - CourseBook</title>
-    <link rel="icon" type="image/x-icon" href="Assets/CourseBookLogo.png" />
-    <link rel="stylesheet" href="Theme/style.css" />
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>CourseBook — Login</title>
+<link rel="icon" type="image/x-icon" href="Assets/CourseBook.png">
 
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #e9ecef;
-        margin: 0;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-      .auth-container {
-        background-color: #262261;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        width: 100%;
-        max-width: 400px;
-        overflow: hidden;
-      }
+<!-- Stylish Premium Font: Outfit -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-      .brand-header {
-        background: white;
-        padding: 20px 10px;
-        text-align: center;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .slogan {
-        font-size: 15px;
-        font-weight: 900;
-        color: #000;
-        text-transform: uppercase;
-        margin-bottom: 10px;
+<style>
+    /* =========================================================
+       PREMIUM AUTHENTICATION THEME
+       ========================================================= */
+    :root {
+        --primary: #4F46E5; /* Indigo */
+        --primary-hover: #3730A3;
+        --gradient: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%);
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #CBD5E1;
+        --border-focus: #EEF2FF;
+        --clay: #E11D48; /* Red for errors */
+        --shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; letter-spacing: 0.3px; }
+    
+    body { 
+        background-color: var(--bg); 
+        background-image: radial-gradient(circle at top left, rgba(79, 70, 229, 0.05), transparent 40%),
+                          radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.05), transparent 40%);
+        display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; 
+    }
+    
+    .auth-container { 
+        background: var(--surface); width: 100%; max-width: 440px; 
+        border-radius: 24px; box-shadow: var(--shadow); padding: 40px 32px; 
+        text-align: center; position: relative; overflow: hidden; 
+        border: 1px solid rgba(0,0,0,0.04); 
+    }
+    
+    .logo-area { margin-bottom: 30px; }
+    .logo-area img { height: 50px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .logo-area h2 { color: var(--text-main); font-weight: 600; font-size: 1.6rem; letter-spacing: -0.5px; }
+    .logo-area p { color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+
+    /* Custom Toggle Tabs */
+    .tab-group { display: flex; background: #F1F5F9; border-radius: 12px; padding: 5px; margin-bottom: 28px; }
+    .tab-btn { 
+        flex: 1; padding: 12px; border: none; background: transparent; 
+        border-radius: 8px; font-size: 0.95rem; font-weight: 500; 
+        color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; 
+    }
+    .tab-btn.active { background: var(--surface); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); font-weight: 600; }
+
+    .form-area { display: none; animation: slideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .form-area.active { display: block; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Inputs */
+    .input-group { margin-bottom: 18px; text-align: left; }
+    .input-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
+    .input-group input, .input-group select { 
+        width: 100%; padding: 14px 16px; border-radius: 12px; 
+        border: 1.5px solid var(--border); font-size: 0.95rem; color: var(--text-main); 
+        outline: none; transition: all 0.3s ease; background: var(--surface); 
+        font-family: inherit;
+    }
+    .input-group input:focus, .input-group select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--border-focus); }
+
+    /* Buttons */
+    .submit-btn { 
+        width: 100%; padding: 15px; border: none; border-radius: 30px; 
+        background: var(--gradient); color: white; font-size: 1rem; 
+        font-weight: 500; cursor: pointer; transition: all 0.3s ease; 
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); margin-top: 10px; 
         letter-spacing: 0.5px;
-      }
-      .logo-title-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-      }
-      .brand-logo {
-        width: 75px;
-        height: auto;
-      }
-      .brand-title {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-        line-height: 0.9;
-      }
-      .text-course {
-        font-size: 38px;
-        font-weight: 900;
-        color: #0056b3;
-        text-transform: uppercase;
-      }
-      .text-book {
-        font-size: 38px;
-        font-weight: 900;
-        color: #0056b3;
-        text-transform: uppercase;
-      }
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35); }
+    .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
-      .auth-body {
-        padding: 30px;
-      }
-      .input-group {
-        margin-bottom: 15px;
-      }
-      .input-group input,
-      .input-group select {
-        width: 100%;
-        padding: 12px 15px;
-        border: none;
-        border-radius: 2px;
-        outline: none;
-        box-sizing: border-box;
-        font-size: 15px;
-        background-color: #ffffff;
-      }
-      .input-group input::placeholder {
-        color: #888;
-      }
+    .forgot-link { 
+        display: block; text-align: right; font-size: 0.85rem; color: var(--primary); 
+        text-decoration: none; font-weight: 500; margin-top: -10px; margin-bottom: 20px; cursor: pointer; transition: 0.2s;
+    }
+    .forgot-link:hover { text-decoration: underline; color: var(--primary-hover); }
 
-      .action-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-      }
-      .forgot-password {
-        color: #ffeb3b;
-        font-size: 13px;
-        font-weight: bold;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        cursor: pointer;
-      }
-      .lock-icon {
-        background: #00bcd4;
-        color: white;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 10px;
-      }
-      .auth-btn {
-        padding: 10px 35px;
-        background-color: #ffffff;
-        color: #000000;
-        border: none;
-        border-radius: 2px;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: bold;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-      .auth-btn:hover {
-        background-color: #f1f1f1;
-      }
+    /* Toast */
+    #toastContainer { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+    .toast { 
+        background: var(--surface); color: var(--text-main); padding: 16px 24px; 
+        border-radius: 30px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; 
+        font-weight: 500; font-size: 0.95rem; border-left: 5px solid var(--primary); 
+        transform: translateX(120%); transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    }
+    .toast-error { border-left-color: var(--clay); }
+    .toast.show { transform: translateX(0); }
 
-      .toggle-text {
-        margin-top: 25px;
-        font-size: 13px;
-        color: #cfd8dc;
-        text-align: center;
-      }
-      .toggle-text span {
-        color: #4fc3f7;
-        cursor: pointer;
-        font-weight: bold;
-      }
-      .hidden {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="auth-container">
-      <div class="brand-header">
-        <div class="slogan">A NEW ERA OF ACADEMIC EXCELLENCE</div>
-        <div class="logo-title-row">
-          <img src="Assets/CourseBookLogo.png" alt="Logo" class="brand-logo" />
-          <div class="brand-title">
-            <span class="text-course">Course</span>
-            <span class="text-book">Book</span>
-          </div>
-        </div>
-      </div>
+    /* Loader Overlay */
+    .loader-overlay { 
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(255,255,255,0.7); backdrop-filter: blur(4px); 
+        display: flex; justify-content: center; align-items: center; 
+        z-index: 50; opacity: 0; pointer-events: none; transition: 0.3s; 
+    }
+    .loader-overlay.active { opacity: 1; pointer-events: all; }
+    .spinner { 
+        width: 40px; height: 40px; border: 4px solid var(--border-focus); 
+        border-top: 4px solid var(--primary); border-radius: 50%; 
+        animation: spin 1s linear infinite; 
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-      <div class="auth-body">
-        <!-- LOGIN FORM -->
-        <div id="login-section">
-          <form id="login-form">
-            <div class="input-group">
-              <input
-                type="email"
-                id="login-email"
-                placeholder="Enter your ID / Email"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <input
-                type="password"
-                id="login-password"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
+    /* Verification Box */
+    .verify-box {
+        display: none; text-align: center; padding: 20px 0;
+    }
+    .verify-box.active { display: block; }
+    .verify-box svg { width: 60px; height: 60px; color: var(--primary); margin-bottom: 15px;}
+</style>
+</head>
+<body>
 
-            <div class="action-row">
-              <div class="forgot-password" id="forgot-password-btn">
-                <span class="lock-icon">🔒</span>
-                FORGOT<br />PASSWORD
-              </div>
-              <button type="submit" class="auth-btn">Login</button>
-            </div>
-          </form>
-          <p class="toggle-text">
-            Don't have an account?
-            <span onclick="toggleForm()">Sign Up here</span>
-          </p>
-        </div>
-
-        <!-- SIGNUP FORM -->
-        <div id="signup-section" class="hidden">
-          <form id="signup-form">
-            <div class="input-group">
-              <input
-                type="text"
-                id="signup-name"
-                placeholder="Enter your full name"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <select id="signup-role" required>
-                <option value="student" selected>Student</option>
-                <option value="teacher">Teacher</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <input
-                type="email"
-                id="signup-email"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <input
-                type="password"
-                id="signup-password"
-                placeholder="Create password (min 6 chars)"
-                required
-              />
-            </div>
-
-            <div class="action-row" style="justify-content: flex-end">
-              <button
-                type="submit"
-                class="auth-btn"
-                style="background-color: #0056b3; color: white"
-              >
-                Sign Up
-              </button>
-            </div>
-          </form>
-          <p class="toggle-text">
-            Already have an account?
-            <span onclick="toggleForm()">Login here</span>
-          </p>
-        </div>
-      </div>
+<div class="auth-container">
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="spinner"></div>
     </div>
 
-    <script>
-      function toggleForm() {
-        const loginSection = document.getElementById("login-section");
-        const signupSection = document.getElementById("signup-section");
-        if (loginSection.classList.contains("hidden")) {
-          loginSection.classList.remove("hidden");
-          signupSection.classList.add("hidden");
-        } else {
-          loginSection.classList.add("hidden");
-          signupSection.classList.remove("hidden");
-        }
-      }
-    </script>
+    <div class="logo-area" id="logoArea">
+        <img src="Assets/CourseBookLogo.png" alt="CourseBook Logo">
+        <h2>CourseBook</h2>
+        <p>Your Ultimate Academic Companion</p>
+    </div>
 
-    <!-- FIREBASE SCRIPT -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import {
-        getAuth,
-        createUserWithEmailAndPassword,
-        signInWithEmailAndPassword,
-        sendEmailVerification,
-        onAuthStateChanged,
-        sendPasswordResetEmail,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-      // Database import
-      import {
-        getFirestore,
-        doc,
-        setDoc,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- TABS -->
+    <div class="tab-group" id="tabGroup">
+        <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" id="tabSignup" onclick="switchTab('signup')">Create Account</button>
+    </div>
 
-      const firebaseConfig = {
+    <!-- LOGIN FORM -->
+    <form id="loginForm" class="form-area active">
+        <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="you@university.edu" required>
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <span class="forgot-link" id="forgotBtn">Forgot Password?</span>
+        <button type="submit" class="submit-btn" id="loginBtn">Sign In</button>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signupForm" class="form-area">
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="signupName" placeholder="e.g. John Doe" required>
+        </div>
+        <div class="input-group">
+            <label>Email Address</label>
+            <input type="email" id="signupEmail" placeholder="you@university.edu" required>
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" placeholder="Create a strong password" required minlength="6">
+        </div>
+        <div class="input-group">
+            <label>I am a</label>
+            <select id="signupRole">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
+        </div>
+        <button type="submit" class="submit-btn" id="signupBtn">Create Account</button>
+    </form>
+
+    <!-- EMAIL VERIFICATION PENDING -->
+    <div id="verifyBox" class="verify-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        <h3 style="color: var(--text-main); margin-bottom: 10px;">Verify your email</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+            We've sent a verification link to your email address. Please click the link to activate your account.
+        </p>
+        <button class="submit-btn" onclick="location.reload()" style="background: var(--surface); color: var(--text-main); border: 1.5px solid var(--border); box-shadow: none;">I have verified, Refresh</button>
+    </div>
+
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- FIREBASE LOGIC -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
         apiKey: "AIzaSyC1VrcMa2Zo3wlhpEhDa14IrbXlEtjobjQ",
         authDomain: "studentmanagement-84401.firebaseapp.com",
         projectId: "studentmanagement-84401",
         storageBucket: "studentmanagement-84401.firebasestorage.app",
         messagingSenderId: "1023520287147",
-        appId: "1:1023520287147:web:a20a35d9f98cac6afa4aee",
-        measurementId: "G-YKRXVYKL72",
-      };
+        appId: "1:1023520287147:web:a20a35d9f98cac6afa4aee"
+    };
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-      onAuthStateChanged(auth, (user) => {
-        if (user && user.emailVerified) {
-          window.location.replace("dashboard.html");
+    // Toast Utility
+    window.showToast = function(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const t = document.createElement('div');
+        t.className = `toast toast-${type}`;
+        t.innerHTML = `<span>${message}</span>`;
+        container.appendChild(t);
+        requestAnimationFrame(() => t.classList.add('show'));
+        setTimeout(() => {
+            t.classList.remove('show');
+            setTimeout(() => t.remove(), 300);
+        }, 3500);
+    }
+
+    // Toggle UI Tabs
+    window.switchTab = function(tab) {
+        document.getElementById('tabLogin').classList.remove('active');
+        document.getElementById('tabSignup').classList.remove('active');
+        document.getElementById('loginForm').classList.remove('active');
+        document.getElementById('signupForm').classList.remove('active');
+
+        if(tab === 'login') {
+            document.getElementById('tabLogin').classList.add('active');
+            document.getElementById('loginForm').classList.add('active');
+        } else {
+            document.getElementById('tabSignup').classList.add('active');
+            document.getElementById('signupForm').classList.add('active');
         }
-      });
+    }
 
-      // Forgot Password Logic
-      document
-        .getElementById("forgot-password-btn")
-        .addEventListener("click", () => {
-          const email = document.getElementById("login-email").value;
-          if (!email) {
-            alert(
-              "Prothome 'Enter your ID / Email' box-e apnar email type korun, tarpor 'Forgot Password'-e click korun.",
-            );
-            return;
-          }
-          sendPasswordResetEmail(auth, email)
-            .then(() =>
-              alert(
-                "Password reset link apnar email-e pathano hoyeche! Inbox check korun.",
-              ),
-            )
-            .catch((error) => alert("Error: " + error.message));
-        });
+    function toggleLoader(show) {
+        if(show) document.getElementById('loaderOverlay').classList.add('active');
+        else document.getElementById('loaderOverlay').classList.remove('active');
+    }
 
-      // Signup Logic with Firestore Database Save
-      document
-        .getElementById("signup-form")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const email = document.getElementById("signup-email").value;
-          const password = document.getElementById("signup-password").value;
-          const name = document.getElementById("signup-name").value;
-          const role = document.getElementById("signup-role").value;
-
-          try {
-            const userCredential = await createUserWithEmailAndPassword(
-              auth,
-              email,
-              password,
-            );
-
-            // User er details database e save kora
-            await setDoc(doc(db, "users", userCredential.user.uid), {
-              name: name,
-              email: email,
-              role: role,
-              createdAt: new Date(),
-            });
-
-            await sendEmailVerification(userCredential.user);
-            alert(
-              "Account Created Successfully! A verification email has been sent.",
-            );
-            toggleForm();
-            document.getElementById("signup-form").reset();
-          } catch (error) {
-            alert("Error: " + error.message);
-          }
-        });
-
-      // Login Logic
-      document.getElementById("login-form").addEventListener("submit", (e) => {
+    // Handle Login
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = document.getElementById("login-email").value;
-        const password = document.getElementById("login-password").value;
+        toggleLoader(true);
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPassword').value;
 
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            if (!userCredential.user.emailVerified) {
-              alert("Please verify your email address first.");
-              return;
-            }
-            window.location.replace("dashboard.html");
-          })
-          .catch((error) => {
-            alert("Login Failed: " + error.message);
-          });
-      });
-    </script>
-  </body>
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                if(userCredential.user.emailVerified) {
+                    window.location.replace("dashboard.html");
+                } else {
+                    toggleLoader(false);
+                    showToast("Please verify your email first.", "error");
+                    auth.signOut();
+                }
+            })
+            .catch((error) => {
+                toggleLoader(false);
+                let msg = "Invalid email or password.";
+                if(error.code === 'auth/user-not-found') msg = "No account found with this email.";
+                if(error.code === 'auth/too-many-requests') msg = "Too many attempts. Try again later.";
+                showToast(msg, "error");
+            });
+    });
+
+    // Handle Signup
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        toggleLoader(true);
+        const name = document.getElementById('signupName').value;
+        const email = document.getElementById('signupEmail').value;
+        const pass = document.getElementById('signupPassword').value;
+        const role = document.getElementById('signupRole').value;
+
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                
+                // Set Display Name in Auth & Save Profile to Firestore
+                await updateProfile(user, { displayName: name });
+                await setDoc(doc(db, "users", user.uid), {
+                    name: name,
+                    email: email,
+                    role: role,
+                    createdAt: new Date().toISOString()
+                });
+
+                sendEmailVerification(user).then(() => {
+                    toggleLoader(false);
+                    document.getElementById('tabGroup').style.display = 'none';
+                    document.getElementById('signupForm').classList.remove('active');
+                    document.getElementById('verifyBox').classList.add('active');
+                    showToast("Account created! Check email to verify.", "success");
+                });
+            })
+            .catch((error) => {
+                toggleLoader(false);
+                let msg = "Failed to create account.";
+                if(error.code === 'auth/email-already-in-use') msg = "An account with this email already exists.";
+                if(error.code === 'auth/weak-password') msg = "Password should be at least 6 characters.";
+                showToast(msg, "error");
+            });
+    });
+
+    // Handle Forgot Password
+    document.getElementById('forgotBtn').addEventListener('click', () => {
+        const email = document.getElementById('loginEmail').value;
+        if(!email) {
+            showToast("Please enter your email in the field first.", "error");
+            return;
+        }
+        toggleLoader(true);
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                toggleLoader(false);
+                showToast("Password reset link sent to your email.");
+            })
+            .catch((error) => {
+                toggleLoader(false);
+                showToast("Error sending reset link.", "error");
+            });
+    });
+
+</script>
+</body>
 </html>
